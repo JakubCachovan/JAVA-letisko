@@ -21,6 +21,7 @@ public final class HladajLetJDialog extends javax.swing.JDialog {
     private ResultSet rs = null;
     private Date datum = null;
     private String destinacia = "";
+    private String dbPath;
     /**
      * Creates new form HladajLetJDialog
      * @param parent
@@ -31,11 +32,14 @@ public final class HladajLetJDialog extends javax.swing.JDialog {
         initComponents();
         naplnDestinacie();
     }
+
+    public void setDbPath(String dbPath) {
+        this.dbPath = dbPath;
+    }
     
     public void naplnDestinacie(){
-        try {
-            con = sql_connect.ConnectDB(Aplikacia.DbPath);
-            Statement state = con.createStatement();
+        try (Connection con = sql_connect.ConnectDB(this.dbPath);
+                Statement state = con.createStatement();){
             rs = state.executeQuery("SELECT DISTINCT destinacia from lety");
             while(rs.next()){
                 jComboBoxDestinacie.addItem(rs.getString("destinacia"));

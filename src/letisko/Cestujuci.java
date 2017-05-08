@@ -1,16 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package letisko;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- *
- * @author Acer
+ * Trieda reprezentujúca cestujúceho
+ * @author Jakub Cachovan
  */
 public class Cestujuci extends Osoba implements Serializable{
 

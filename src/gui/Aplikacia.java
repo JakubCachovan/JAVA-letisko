@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -20,9 +16,8 @@ import sql.*;
  */
 public final class Aplikacia extends javax.swing.JFrame {
 
-    static String DbPath;
-    static String FilePath;
-    private Connection con = null;
+    private String dbPath;
+    private String filePath;
     private ResultSet rs = null;   
     private Letisko _letisko = null;
     /**
@@ -34,15 +29,14 @@ public final class Aplikacia extends javax.swing.JFrame {
         loadData.setLocationRelativeTo(null);
         loadData.setVisible(true);
         if(LoadDataDiaglog.isFromDB){
-            DbPath = loadData.getPath();                            
+            dbPath = loadData.getPath();                            
         }else{
-            System.exit(0);
+            throw new RuntimeException("Vypinam");
+            //System.exit(0);
         }         
-        _letisko = LoadFromDB.nacitajLetisko(DbPath);       
-        if(_letisko != null){
-            nacitajVsetkyTabulky();
-            volneMiestaLabel.setVisible(false);
-        } 
+        _letisko = LoadFromDB.nacitajLetisko(dbPath);
+        nacitajVsetkyTabulky();
+        volneMiestaLabel.setVisible(false);
         
         jTableCestujuci.setAutoCreateRowSorter(true);
         jTableDestinacie.setAutoCreateRowSorter(true);
@@ -54,14 +48,14 @@ public final class Aplikacia extends javax.swing.JFrame {
     }
     
     public void nacitajVsetkyTabulky(){
-        FillTableKapitan();    
-        FillTableLety();
-        FillTableCestujuci();
-        FillTableLietadlo();
-        FillTableZoznamLeteniek(); 
+        fillTableKapitan();    
+        fillTableLety();
+        fillTableCestujuci();
+        fillTableLietadlo();
+        fillTableZoznamLeteniek(); 
     }
     
-    public void FillTableZoznamLeteniek(){
+    public void fillTableZoznamLeteniek(){
         DefaultTableModel m = (DefaultTableModel)jTableLetenky.getModel();
         m.setRowCount(0);
         for (Let let : _letisko.getZoznamLetov()) {
@@ -76,7 +70,7 @@ public final class Aplikacia extends javax.swing.JFrame {
             }       
         }    
     }
-    public void FillTableZoznamCestujucich(){         
+    public void fillTableZoznamCestujucich(){         
         int selectedRow = -1;
         selectedRow = jTableLety.getSelectedRow();
         if(selectedRow != -1){
@@ -95,7 +89,7 @@ public final class Aplikacia extends javax.swing.JFrame {
             }       
         }
     }
-    public void FillTableLety(){
+    public void fillTableLety(){
         DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();  
         m.setRowCount(0);
         for (Let let : _letisko.getZoznamLetov()) {
@@ -103,11 +97,11 @@ public final class Aplikacia extends javax.swing.JFrame {
                 let.getDestinacia(), 
                 let.getDatumOdletu().toString(), 
                 let.getKapitan().getMeno() + " " + let.getKapitan().getPriezvisko(), 
-                let.getTypLietadla().name()};
+                let.getTypLietadla().name()};           
             m.addRow(row);
         }    
     }  
-    public void FillTableKapitan(){
+    public void fillTableKapitan(){
         DefaultTableModel m = (DefaultTableModel)jTableKapitan.getModel();
         m.setRowCount(0);
         for (Kapitan kapitan : _letisko.getZoznamKapitanov()) {
@@ -118,11 +112,10 @@ public final class Aplikacia extends javax.swing.JFrame {
             m.addRow(row);
         }
     }  
-    public void FillTableCestujuci(){
-        try {
-            con = sql_connect.ConnectDB(DbPath);
-            Statement state = con.createStatement();
-            rs = state.executeQuery("SELECT * FROM cestujuci");
+    public void fillTableCestujuci(){
+        try (Connection con = sql_connect.ConnectDB(dbPath);
+                PreparedStatement state = con.prepareStatement("SELECT * FROM cestujuci");) {         
+            rs = state.executeQuery();
             DefaultTableModel m = (DefaultTableModel)jTableCestujuci.getModel();
             m.setRowCount(0);
             while (rs.next()) {
@@ -134,7 +127,7 @@ public final class Aplikacia extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }  
-    public void FillTableLietadlo(){
+    public void fillTableLietadlo(){
         DefaultTableModel m = (DefaultTableModel)jTableLietadla.getModel();
         m.setRowCount(0);
         for (Lietadla lietadla : _letisko.getZoznamLietadiel()) {
@@ -198,7 +191,7 @@ public final class Aplikacia extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableKapitan = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
+        jButtonPridatKapitana = new javax.swing.JButton();
         jButtonOdoberKapitana = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTableLietadla = new javax.swing.JTable();
@@ -496,11 +489,11 @@ public final class Aplikacia extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTableKapitan);
 
-        jButton5.setIcon(new javax.swing.ImageIcon("C:\\Users\\Acer\\Documents\\NetBeansProjects\\Letisko\\icons\\plus.png")); // NOI18N
-        jButton5.setText("Pridaj");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        jButtonPridatKapitana.setIcon(new javax.swing.ImageIcon("C:\\Users\\Acer\\Documents\\NetBeansProjects\\Letisko\\icons\\plus.png")); // NOI18N
+        jButtonPridatKapitana.setText("Pridaj");
+        jButtonPridatKapitana.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jButtonPridatKapitanaActionPerformed(evt);
             }
         });
 
@@ -539,7 +532,7 @@ public final class Aplikacia extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton5)
+                        .addComponent(jButtonPridatKapitana)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonOdoberKapitana)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -554,7 +547,7 @@ public final class Aplikacia extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonOdoberKapitana)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonPridatKapitana, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
@@ -693,14 +686,13 @@ public final class Aplikacia extends javax.swing.JFrame {
         int selectedRow = -1;
         selectedRow = jTableKapitan.getSelectedRow();
         if(selectedRow != -1){
-            try {
-                con = sql_connect.ConnectDB(DbPath);           
-                String kapitan = m.getValueAt(selectedRow, 2).toString();
-                Statement state = con.createStatement();
-                String sql = "DELETE FROM kapitan WHERE rodne_cislo=\""+kapitan+"\";";
-                state.executeUpdate(sql);
+            try (Connection con = sql_connect.ConnectDB(dbPath);
+                    PreparedStatement state = con.prepareStatement("DELETE FROM kapitan WHERE rodne_cislo=?;");){        
+                String rc_kapitan = m.getValueAt(selectedRow, 2).toString();
+                state.setString(1, rc_kapitan);
+                state.executeUpdate();
                 m.removeRow(selectedRow);
-                _letisko.removeKapitan(_letisko.najdiKapitanaPodlaRC(kapitan));
+                _letisko.removeKapitan(_letisko.najdiKapitanaPodlaRC(rc_kapitan));
                 con.close();
                 jButtonOdoberKapitana.setEnabled(false);
             } catch (Exception e) {
@@ -712,7 +704,7 @@ public final class Aplikacia extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButtonOdoberKapitanaActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void jButtonPridatKapitanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPridatKapitanaActionPerformed
         /*pridaj kapitána*/
         KapitanJDialog kapitanJDialog = new KapitanJDialog(this, true);
         kapitanJDialog.setLocationRelativeTo(null);
@@ -720,27 +712,29 @@ public final class Aplikacia extends javax.swing.JFrame {
 
         Kapitan kapitan = kapitanJDialog.getKapitan();
         if(kapitan != null){
-            try {
+            try (Connection con = sql_connect.ConnectDB(dbPath);
+                    PreparedStatement state = con.prepareStatement("INSERT INTO kapitan (naliet_hodiny,rodne_cislo,meno,priezvisko) VALUES (?,?,?,?)");){
                 /* uloz do DB*/
-                con = sql_connect.ConnectDB(DbPath);
-                Statement state = con.createStatement();
-                String sql = "INSERT INTO \"main\".\"kapitan\" (\"naliet_hodiny\",\"rodne_cislo\",\"meno\",\"priezvisko\") VALUES ("+kapitan.getNalietaneHodiny()+",\""+kapitan.getRC()+"\",\""+kapitan.getMeno()+"\",\""+kapitan.getPriezvisko()+"\")";
-                state.executeUpdate(sql);
+                state.setString(1, kapitan.getNalietaneHodiny()+"");
+                state.setString(2, kapitan.getRC());
+                state.setString(3, kapitan.getMeno());
+                state.setString(4, kapitan.getPriezvisko());
+                state.executeUpdate();
                 /* vloz do GUI */
                 DefaultTableModel m = (DefaultTableModel)jTableKapitan.getModel();
                 String [] row = {kapitan.getMeno(), kapitan.getPriezvisko(), kapitan.getRC(), ""+kapitan.getNalietaneHodiny()+""};
                 m.addRow(row);
                 _letisko.addKapitan(kapitan);
                 con.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, e);
             }
         }
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_jButtonPridatKapitanaActionPerformed
 
     private void jButtonObnovitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonObnovitActionPerformed
         // TODO add your handling code here:
-        FillTableZoznamLeteniek();
+        fillTableZoznamLeteniek();
     }//GEN-LAST:event_jButtonObnovitActionPerformed
 
     private void jTableZoznamCestujucichMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableZoznamCestujucichMouseClicked
@@ -765,18 +759,19 @@ public final class Aplikacia extends javax.swing.JFrame {
         int selectedRowLety = jTableLety.getSelectedRow();
 
         String letID = lety.getValueAt(selectedRowLety, 0).toString();
-        String destinacia = lety.getValueAt(selectedRowLety, 1).toString();
+        //String destinacia = lety.getValueAt(selectedRowLety, 1).toString();
         String rc = cest.getValueAt(selectedRowCest, 2).toString();
 
         for (Let let : _letisko.getZoznamLetov()) {
             let.zrusRezervaciu(rc);
         }
         
-        try {
-            con = sql_connect.ConnectDB(DbPath);
-            Statement state = con.createStatement();
-            String sql = "DELETE FROM Letenka WHERE id=\""+letID+"\" AND rodne_cislo=\""+rc+"\";";
-            state.executeUpdate(sql);
+        try (Connection con = sql_connect.ConnectDB(dbPath);
+                PreparedStatement state = con.prepareStatement("DELETE FROM Letenka WHERE id=? AND rodne_cislo=?;");){           
+            
+            state.setString(1, letID);
+            state.setString(2, rc);
+            state.executeUpdate();
             /*vymazanie z gui*/
             cest.removeRow(selectedRowCest);
             con.close();
@@ -792,6 +787,7 @@ public final class Aplikacia extends javax.swing.JFrame {
         /* rezervacia letenky */
         RezervaciaJDialog rezervaciaJDialog = new RezervaciaJDialog(this, true);
         rezervaciaJDialog.setLocationRelativeTo(null);
+        rezervaciaJDialog.setDbPath(dbPath);
         rezervaciaJDialog.setVisible(true);
         Cestujuci cestujuci = rezervaciaJDialog.getCestujuci();
         DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();
@@ -801,9 +797,9 @@ public final class Aplikacia extends javax.swing.JFrame {
             for (Let let : _letisko.getZoznamLetov()) {
                 if(let.getID() == Integer.parseInt(letID)){
                     let.rezervujLetenku(let.getDatumOdletu(), cestujuci);
-                    if(InsertToDB.insertLetenka(let, cestujuci, DbPath)){
-                        FillTableZoznamCestujucich();
-                        FillTableZoznamCestujucich();
+                    if(InsertToDB.insertLetenka(let, cestujuci, dbPath)){
+                        fillTableZoznamCestujucich();
+                        fillTableZoznamCestujucich();
                         JOptionPane.showMessageDialog(null, "Letenka pre let " +letID+" úspešne rezervovaná !");
                         loadPocetVolnychMiest(selectedRow);
                     }
@@ -820,11 +816,10 @@ public final class Aplikacia extends javax.swing.JFrame {
         
         int kapacita = Lietadla.valueOf(lietadlo).getKapacita();
         
-        try {
-            con = sql_connect.ConnectDB(DbPath);
-            Statement state = con.createStatement();
-            String sql = "SELECT count(id) as pocet from Letenka WHERE id=\""+idLetu+"\" GROUP BY id;";
-            rs = state.executeQuery(sql);                  
+        try (Connection con = sql_connect.ConnectDB(dbPath);
+                PreparedStatement state = con.prepareStatement("SELECT count(id) as pocet from Letenka WHERE id=? GROUP BY id;");){    
+            state.setString(1, idLetu);
+            rs = state.executeQuery();                  
             while (rs.next()) {                        
                 pocet = rs.getInt("pocet");//getInt("pocet");
             }
@@ -847,7 +842,7 @@ public final class Aplikacia extends javax.swing.JFrame {
                 jButtonRezervaciaLetenky.setEnabled(false);
             }
             volneMiestaLabel.setVisible(true);
-            FillTableZoznamCestujucich();
+            fillTableZoznamCestujucich();
             jButtonZrusitRezervaciu.setEnabled(false);
             jButtonOverRezervaciu.setEnabled(true);
         }
@@ -857,6 +852,7 @@ public final class Aplikacia extends javax.swing.JFrame {
         //hladaj najblizsi let
         HladajLetJDialog hladaj = new HladajLetJDialog(this, true);
         hladaj.setLocationRelativeTo(null);
+        hladaj.setDbPath(dbPath);
         hladaj.setVisible(true);
         String destinacia = hladaj.getDestinacia();  
         Date datum = null;
@@ -885,7 +881,7 @@ public final class Aplikacia extends javax.swing.JFrame {
         String letID = model.getValueAt(selectedRow, 0).toString();
         String destinacia = model.getValueAt(selectedRow, 1).toString();
         _letisko.zrusLet(Integer.parseInt(letID));
-        if(DeleteFromDB.zrusitLet(Integer.parseInt(letID), destinacia, DbPath)){
+        if(DeleteFromDB.zrusitLet(Integer.parseInt(letID), destinacia, dbPath)){
             JOptionPane.showMessageDialog(null, "Let s ID " + letID + " bol úspešne zrušený !");
             DefaultTableModel modelCest = (DefaultTableModel)jTableZoznamCestujucich.getModel();
             modelCest.setRowCount(0);
@@ -900,12 +896,13 @@ public final class Aplikacia extends javax.swing.JFrame {
         /* zriadenie letu na letisku*/
         LetJDialog letJDialog = new LetJDialog(this, true);
         letJDialog.setLocationRelativeTo(null);
+        letJDialog.setDbPath(dbPath);
         letJDialog.setVisible(true);
 
         Let let = letJDialog.getLet();
         if(let != null){   
             _letisko.zriadLet(let.getDestinacia(), let.getDatumOdletu(), let.getKapitan(), let.getTypLietadla());
-            if(InsertToDB.insertLet(let, DbPath)){
+            if(InsertToDB.insertLet(let, dbPath)){
                 /*vloz do GUI */
                 DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();
                 String datumOdletu = new SimpleDateFormat("dd.MM.yyyy").format(let.getDatumOdletu());
@@ -917,44 +914,24 @@ public final class Aplikacia extends javax.swing.JFrame {
   
     
     private void jButtonHladajCestujucehoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHladajCestujucehoActionPerformed
-
         HladajCestDialog cestDialog = new HladajCestDialog(this, true);
         cestDialog.setLocationRelativeTo(null);
         cestDialog.setVisible(true);
         Cestujuci najdeny = null;
-        if(cestDialog.getMeno() != "" && cestDialog.getPriezvisko() != ""){
+        if(!cestDialog.getMeno().equalsIgnoreCase("") && !cestDialog.getPriezvisko().equalsIgnoreCase("")){
             String meno = cestDialog.getMeno();
-            String priezvisko = cestDialog.getPriezvisko();       
-            try {
-                con = sql_connect.ConnectDB(DbPath);
-                Statement state = con.createStatement();
-                rs = state.executeQuery("SELECT * from cestujuci WHERE meno=\""+meno+"\"AND priezvisko=\""+priezvisko+"\";");
-                while (rs.next()) {                    
-                    najdeny = new Cestujuci(rs.getString("meno"), rs.getString("priezvisko"), rs.getString("rodne_cislo"));
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-                JOptionPane.showMessageDialog(null, "Zadaný cestujúci sa nenašiel !", "Varovanie", JOptionPane.WARNING_MESSAGE);
-            }              
-        }else if(!cestDialog.getRc().equalsIgnoreCase("")){
-            String rc = cestDialog.getRc();
-            try {
-                con = sql_connect.ConnectDB(DbPath);
-                Statement state = con.createStatement();
-                rs = state.executeQuery("SELECT * from cestujuci WHERE rodne_cislo=\""+rc+"\";");
-                while (rs.next()) {                    
-                    najdeny = new Cestujuci(rs.getString("meno"), rs.getString("priezvisko"), rs.getString("rodne_cislo"));
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-                JOptionPane.showMessageDialog(null, "Zadaný cestujúci sa nenašiel !");
-            }    
+            String priezvisko = cestDialog.getPriezvisko();  
+            najdeny = _letisko.najdiCestujuceho(meno,priezvisko);                       
+        }else if(!cestDialog.getRC().equalsIgnoreCase("")){
+            String rc = cestDialog.getRC();
+            najdeny = _letisko.najdiCestujuceho(rc);  
         }
         if(najdeny != null){
             PrehladCestujucehoDialog prehlad = new PrehladCestujucehoDialog(this, true);
             prehlad.setLocationRelativeTo(null);          
             prehlad.setCestujuci(najdeny);
             prehlad.nacitajCestujuceho();
+            prehlad.setDbPath(dbPath);
             prehlad.setVisible(true);
         }else{
             JOptionPane.showMessageDialog(null, "Zadaný cestujúci sa nenašiel !", "Varovanie", JOptionPane.WARNING_MESSAGE);
@@ -967,14 +944,14 @@ public final class Aplikacia extends javax.swing.JFrame {
         HladajRezervaciu rezDialog = new HladajRezervaciu(this, true);
         rezDialog.setLocationRelativeTo(null);
         rezDialog.setVisible(true);
-        if(!rezDialog.getRc().isEmpty()){
-            String rc = rezDialog.getRc();
+        if(!rezDialog.getRC().isEmpty()){
+            String rc = rezDialog.getRC();
             DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();
             int selRow = jTableLety.getSelectedRow();
             String idLetu = m.getValueAt(selRow, 0).toString();
             boolean najdeny = _letisko.najdiCestujuceho(rc, Integer.parseInt(idLetu));
             if(najdeny){
-                 JOptionPane.showMessageDialog(null, "OK! cestujúci s RC: "+rc+" má rezervovaný let "+idLetu);
+                JOptionPane.showMessageDialog(null, "OK! cestujúci s RC: "+rc+" má rezervovaný let "+idLetu);
             }else{
                 JOptionPane.showMessageDialog(null, "Lutujeme! rezervácia sa nenašla...");
             }           
@@ -998,7 +975,7 @@ public final class Aplikacia extends javax.swing.JFrame {
 
         Cestujuci cestujuci = cestujuciJDialog.getCestujuci();
         if(cestujuci != null){
-            if(InsertToDB.insertCestujuceho(cestujuci, DbPath)){
+            if(InsertToDB.insertCestujuceho(cestujuci, dbPath)){
                 /*vloz do GUI */
                 DefaultTableModel m = (DefaultTableModel)jTableCestujuci.getModel();
                 String [] row = {cestujuci.getMeno(), cestujuci.getPriezvisko(), cestujuci.getRC()};
@@ -1016,7 +993,7 @@ public final class Aplikacia extends javax.swing.JFrame {
         pocetVymazanychLetov = _letisko.vymazLetyCestujuceho(rc);
         JOptionPane.showMessageDialog(null, "Bolo vymazanych " + pocetVymazanychLetov + " letov");
         
-        if(DeleteFromDB.deleteCestujuceho(rc, DbPath)){
+        if(DeleteFromDB.deleteCestujuceho(rc, dbPath)){
             m.removeRow(row);
             JOptionPane.showMessageDialog(null, "Cestujúci bol vymazaný z DB");
             jButtonVymazCestujuceho.setEnabled(false);
@@ -1040,12 +1017,10 @@ public final class Aplikacia extends javax.swing.JFrame {
      * @param evt 
      */
     private void jButtonUlozActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUlozActionPerformed
-        // TODO add your handling code here:
         try {
             JFileChooser fileChooser = new JFileChooser("./");
             if (fileChooser.showSaveDialog(this)== JFileChooser.APPROVE_OPTION) {
               File file = fileChooser.getSelectedFile();
-              String filePath = file.getAbsolutePath();
               if(Letisko.save(file, _letisko)){
                   JOptionPane.showMessageDialog(null, "Uloženie úspešné!", "Info", JOptionPane.INFORMATION_MESSAGE);
               }else{
@@ -1058,8 +1033,7 @@ public final class Aplikacia extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonUlozActionPerformed
 
     private void jButtonRefreshCestujuciActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshCestujuciActionPerformed
-        // TODO add your handling code here:
-        FillTableCestujuci();
+        fillTableCestujuci();
     }//GEN-LAST:event_jButtonRefreshCestujuciActionPerformed
   
     
@@ -1102,13 +1076,13 @@ public final class Aplikacia extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButtonHladajCestujuceho;
     private javax.swing.JButton jButtonHladajNajblizsiLet;
     private javax.swing.JButton jButtonObnovit;
     private javax.swing.JButton jButtonOdoberKapitana;
     private javax.swing.JButton jButtonOverRezervaciu;
     private javax.swing.JButton jButtonPridajCestujuceho;
+    private javax.swing.JButton jButtonPridatKapitana;
     private javax.swing.JButton jButtonRefreshCestujuci;
     private javax.swing.JButton jButtonRezervaciaLetenky;
     private javax.swing.JButton jButtonUloz;

@@ -20,6 +20,7 @@ import sql.sql_connect;
 public final class PrehladCestujucehoDialog extends javax.swing.JDialog {
 
     private Cestujuci cestujuci;
+    private String dbPath;
     /**
      * Creates new form PrehladCestujucehoDialog
      * @param parent
@@ -29,6 +30,12 @@ public final class PrehladCestujucehoDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
+
+    public void setDbPath(String dbPath) {
+        this.dbPath = dbPath;
+    }
+    
+    
 
     public void setCestujuci(Cestujuci cestujuci) {
         this.cestujuci = cestujuci;
@@ -40,7 +47,7 @@ public final class PrehladCestujucehoDialog extends javax.swing.JDialog {
         jLabelRC.setText(cestujuci.getRC());
         DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();
         try {
-            Connection con = sql_connect.ConnectDB(Aplikacia.DbPath);
+            Connection con = sql_connect.ConnectDB(this.dbPath);
             Statement state = con.createStatement();
             ResultSet rs = state.executeQuery("SELECT * from lety JOIN Letenka USING (id) JOIN cestujuci USING (rodne_cislo) WHERE rodne_cislo=\""+cestujuci.getRC()+"\";");
             while(rs.next()){

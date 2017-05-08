@@ -39,7 +39,7 @@ public class Kapitan extends Osoba implements Serializable{
     }
 
     /**
-     * 
+     * Getter pre rodné číslo kapitána.
      * @return 
      */
     @Override
@@ -48,7 +48,7 @@ public class Kapitan extends Osoba implements Serializable{
     }
 
     /**
-     * 
+     * Getter pre priezvisko kapitána.
      * @return 
      */
     @Override
@@ -57,7 +57,7 @@ public class Kapitan extends Osoba implements Serializable{
     }
 
     /**
-     * 
+     * Getter pre meno kapitána.
      * @return 
      */
     @Override
@@ -66,8 +66,7 @@ public class Kapitan extends Osoba implements Serializable{
     }
 
     /**
-     * 
-     * @return 
+     * @return toString
      */
     @Override
     public String toString() {

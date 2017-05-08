@@ -6,7 +6,6 @@
 package gui;
 
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
 
 /**
  *
@@ -34,7 +33,7 @@ public class HladajCestDialog extends javax.swing.JDialog {
         return priezvisko;
     }
 
-    public String getRc() {
+    public String getRC() {
         return rc;
     }
 

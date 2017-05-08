@@ -22,7 +22,7 @@ public class HladajRezervaciu extends javax.swing.JDialog {
         initComponents();
     }
 
-    public String getRc() {
+    public String getRC() {
         return rc;
     }
     /**

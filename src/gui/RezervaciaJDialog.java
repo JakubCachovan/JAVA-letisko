@@ -20,27 +20,27 @@ import sql.sql_connect;
  *
  * @author Acer
  */
-public class RezervaciaJDialog extends javax.swing.JDialog {
+public final class RezervaciaJDialog extends javax.swing.JDialog {
     private Cestujuci cestujuci = null;
     private ResultSet rs = null; 
-    private Connection con = null;
+    private String dbPath;
     /**
      * Creates new form RezervaciaJDialog
+     * @param parent
+     * @param modal
      */
     public RezervaciaJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        FillTableCestujuciFromDB();        
-        jTableExistujuciCestujuci.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-            public void valueChanged(ListSelectionEvent event) {
-                jButtonExistujuci.setEnabled(true);
-            }
-        });  
+        fillTableCestujuci();        
+    }
+
+    public void setDbPath(String dbPath) {
+        this.dbPath = dbPath;
     }
     
-    public void FillTableCestujuciFromDB(){
-        try {
-            Connection con = sql_connect.ConnectDB(Aplikacia.DbPath);
+    public void fillTableCestujuci(){
+        try (Connection con = sql_connect.ConnectDB(this.dbPath);){
             Statement state = con.createStatement();
             rs = state.executeQuery("SELECT * FROM cestujuci");
             DefaultTableModel m = (DefaultTableModel)jTableExistujuciCestujuci.getModel();
@@ -90,6 +90,11 @@ public class RezervaciaJDialog extends javax.swing.JDialog {
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        jTableExistujuciCestujuci.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableExistujuciCestujuciMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTableExistujuciCestujuci);
@@ -149,8 +154,7 @@ public class RezervaciaJDialog extends javax.swing.JDialog {
         cestujuciJDialog.setVisible(true);
         cestujuci = cestujuciJDialog.getCestujuci();
         if(cestujuci != null){
-            try {
-            con = sql_connect.ConnectDB(Aplikacia.DbPath);
+            try (Connection con = sql_connect.ConnectDB(this.dbPath);){ 
             Statement state = con.createStatement();
             String sql = "INSERT INTO cestujuci VALUES (\""+cestujuci.getRC()+"\", \""+cestujuci.getMeno()+"\", \""+cestujuci.getPriezvisko()+"\");";
             state.executeUpdate(sql);
@@ -177,6 +181,15 @@ public class RezervaciaJDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_jButtonExistujuciActionPerformed
+
+    private void jTableExistujuciCestujuciMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableExistujuciCestujuciMouseClicked
+        int selectedRow = -1;
+        selectedRow = jTableExistujuciCestujuci.getSelectedRow();
+        if(selectedRow != -1){
+            jButtonExistujuci.setEnabled(true);
+        }
+               
+    }//GEN-LAST:event_jTableExistujuciCestujuciMouseClicked
 
   
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -8,8 +8,8 @@ package gui;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.sql.Date;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import letisko.Kapitan;
 import letisko.Let;
@@ -21,10 +21,10 @@ import sql.sql_connect;
  */
 public class LetJDialog extends javax.swing.JDialog {
 
-    private Connection con = null;
     private ResultSet rs = null;
     private Let let = null;
     private Kapitan kapitan = null;
+    private String dbPath;
     /**
      * Creates new form LetJDialog
      */
@@ -34,14 +34,19 @@ public class LetJDialog extends javax.swing.JDialog {
         nacitajKapitanovFromDB();
         nacitajLietadlaFromDB();
     }
+
+    public void setDbPath(String dbPath) {
+        this.dbPath = dbPath;
+    }
+    
+    
     
     public Let getLet(){
         return let;
     }
     
     public void nacitajKapitanovFromDB(){
-        try {
-            Connection con = sql_connect.ConnectDB(Aplikacia.DbPath);
+        try (Connection con = sql_connect.ConnectDB(this.dbPath);){      
             Statement state = con.createStatement();
             rs = state.executeQuery("SELECT * from kapitan");
             while(rs.next()){
@@ -55,7 +60,7 @@ public class LetJDialog extends javax.swing.JDialog {
     
     public void nacitajLietadlaFromDB(){
         try {
-            Connection con = sql_connect.ConnectDB(Aplikacia.DbPath);
+            Connection con = sql_connect.ConnectDB(this.dbPath);
             Statement state = con.createStatement();
             rs = state.executeQuery("SELECT nazov from lietadlo");
             while(rs.next()){
@@ -156,8 +161,7 @@ public class LetJDialog extends javax.swing.JDialog {
     private void jButtonZriadLetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonZriadLetActionPerformed
         // TODO add your handling code here:
         
-        try {
-            Connection con = sql_connect.ConnectDB(Aplikacia.DbPath);
+        try (Connection con = sql_connect.ConnectDB(this.dbPath);) { 
             Statement state = con.createStatement();
             rs = state.executeQuery("SELECT * from kapitan where priezvisko=\""+jComboBoxKapitan.getSelectedItem().toString()+"\"");
             kapitan = new Kapitan(Integer.parseInt(rs.getString("naliet_hodiny")), rs.getString("meno"), rs.getString("priezvisko"), rs.getString("rodne_cislo"));   
@@ -165,7 +169,7 @@ public class LetJDialog extends javax.swing.JDialog {
             let = new Let(jTextDestinacia.getText(), kapitan , datumOdletu, Lietadla.valueOf(jComboBoxLietadlo.getSelectedItem().toString()));
             con.close();
             dispose();
-        } catch (Exception e) {
+        } catch (SQLException | NumberFormatException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_jButtonZriadLetActionPerformed

@@ -1,0 +1,24 @@
+
+Zoznam letov
+;ID;Destinacia;Datum odletu;Kapitan;Typ lietadla;Kapacita lietadla
+;3;Dubaj;2017-06-21;Stanislav Blaznivy;Boeing737;205
+;4;Berlin;2017-04-08;Stanislav Blaznivy;Boeing737;205
+;5;Slovensko;2017-04-29;Stanislav Blaznivy;Boeing737;205
+;6;Berlin;2017-04-15;Stanislav Blaznivy;Boeing737;205
+;7;Berlin;2017-04-16;Stanislav Blaznivy;Boeing737;205
+;8;Berlin;2017-04-15;Stanislav Blaznivy;Boeing737;205
+;10;New York;2017-04-19;Stanislav Blaznivy;Boeing737;205
+
+Zoznam cestujucich
+;ID letu;Meno;Priezvisko;Rodne cislo
+;3;Stara;Blazkova;123
+;3;Juroslavovic;Blaznivy;123456/3698
+;3;Jozko;Mrkvicka;12345678910
+;3;Mino;Demovič;252525/3131
+;4;Juroslavovic;Blaznivy;123456/3698
+;4;Mino;Demovič;252525/3131
+;5;Juroslavovic;Blaznivy;123456/3698
+;5;Ferko;Mrkvicka;123456789
+;7;Juroslavovic;Blaznivy;123456/3698
+;7;Jozko;Mrkvicka;12345678910
+;10;Juroslavovic;Blaznivy;123456/3698

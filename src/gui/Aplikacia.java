@@ -1074,7 +1074,6 @@ public final class Aplikacia extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {                
-                //new Aplikacia().setVisible(true);
                 Aplikacia aplikacia = new Aplikacia();
                 aplikacia.setLocationRelativeTo(null);
                 aplikacia.setVisible(true);

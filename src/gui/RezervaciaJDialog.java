@@ -6,6 +6,7 @@
 package gui;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,15 +38,14 @@ public final class RezervaciaJDialog extends javax.swing.JDialog {
     }
     
     public void fillTableCestujuci(){
-        try (Connection con = sql_connect.ConnectDB(this.dbPath);){
-            Statement state = con.createStatement();
-            rs = state.executeQuery("SELECT * FROM cestujuci");
+        try (Connection con = sql_connect.ConnectDB(this.dbPath);
+                PreparedStatement state = con.prepareStatement("SELECT * FROM cestujuci");){
+            rs = state.executeQuery();
             DefaultTableModel m = (DefaultTableModel)jTableExistujuciCestujuci.getModel();
             while (rs.next()) {
                String [] row = {rs.getString("meno"), rs.getString("priezvisko"), rs.getString("rodne_cislo")};
                m.addRow(row);                
-            }  
-            con.close();
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -151,10 +151,12 @@ public final class RezervaciaJDialog extends javax.swing.JDialog {
         cestujuciJDialog.setVisible(true);
         cestujuci = cestujuciJDialog.getCestujuci();
         if(cestujuci != null){
-            try (Connection con = sql_connect.ConnectDB(this.dbPath);){ 
-                Statement state = con.createStatement();
-                String sql = "INSERT INTO cestujuci VALUES (\""+cestujuci.getRC()+"\", \""+cestujuci.getMeno()+"\", \""+cestujuci.getPriezvisko()+"\");";
-                state.executeUpdate(sql);
+            try (Connection con = sql_connect.ConnectDB(this.dbPath);
+                    PreparedStatement state = con.prepareStatement("INSERT INTO cestujuci VALUES (?,?,?);");){ 
+                state.setString(1, cestujuci.getRC());
+                state.setString(2, cestujuci.getMeno());
+                state.setString(3, cestujuci.getPriezvisko());
+                state.executeUpdate();
                 con.close();
                 dispose();
             } catch (SQLException e) {

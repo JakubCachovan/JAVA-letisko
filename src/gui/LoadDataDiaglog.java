@@ -6,10 +6,12 @@
 package gui;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -28,6 +30,9 @@ public class LoadDataDiaglog extends javax.swing.JDialog {
     public LoadDataDiaglog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        jButtonDefault.setIcon(new ImageIcon("./icons/database.png"));
+        jButtonNacitaj.setIcon(new ImageIcon("./icons/refreshing.png"));
+        jButtonVybrat.setIcon(new ImageIcon("./icons/more.png"));
     }
 
     public String getPath() {
@@ -48,11 +53,11 @@ public class LoadDataDiaglog extends javax.swing.JDialog {
     private void initComponents() {
 
         jFrame1 = new javax.swing.JFrame();
-        jButton1 = new javax.swing.JButton();
+        jButtonVybrat = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButtonNacitaj = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jButtonDefault = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
@@ -69,10 +74,9 @@ public class LoadDataDiaglog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Načítanie dát");
 
-        jButton1.setText("Vybrať");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonVybrat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonVybratActionPerformed(evt);
             }
         });
 
@@ -87,10 +91,10 @@ public class LoadDataDiaglog extends javax.swing.JDialog {
             }
         });
 
-        jButton3.setText("Vybrať predvolené");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonDefault.setText("Vybrať predvolené");
+        jButtonDefault.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButtonDefaultActionPerformed(evt);
             }
         });
 
@@ -108,8 +112,8 @@ public class LoadDataDiaglog extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonVybrat, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
+                    .addComponent(jButtonDefault, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonNacitaj, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -117,7 +121,7 @@ public class LoadDataDiaglog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonDefault, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -125,7 +129,7 @@ public class LoadDataDiaglog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonVybrat, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonNacitaj, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -134,7 +138,7 @@ public class LoadDataDiaglog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonVybratActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVybratActionPerformed
      
         try {
             JFileChooser chooser = new JFileChooser("./");
@@ -146,7 +150,7 @@ public class LoadDataDiaglog extends javax.swing.JDialog {
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, "Nebol vybratý žiadny súbor!", "Chyba", JOptionPane.ERROR_MESSAGE);
         }   
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonVybratActionPerformed
 
     private void jButtonNacitajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNacitajActionPerformed
         Pattern p = Pattern.compile("(.sqlite)");
@@ -160,7 +164,7 @@ public class LoadDataDiaglog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButtonNacitajActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButtonDefaultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDefaultActionPerformed
 
         path = "C:\\Users\\Acer\\Documents\\NetBeansProjects\\Letisko\\letisko.db.sqlite";       
         file = new File(path);
@@ -171,12 +175,12 @@ public class LoadDataDiaglog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Predvolené načítavanie nie je dostupné pre toto PC");
         }
         
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jButtonDefaultActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonDefault;
     private javax.swing.JButton jButtonNacitaj;
+    private javax.swing.JButton jButtonVybrat;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;

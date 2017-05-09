@@ -52,9 +52,9 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jTextField1" min="-2" pref="200" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton1" pref="79" max="32767" attributes="0"/>
+                      <Component id="jButtonVybrat" pref="79" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="jButton3" max="32767" attributes="0"/>
+                  <Component id="jButtonDefault" max="32767" attributes="0"/>
                   <Component id="jButtonNacitaj" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -65,7 +65,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton3" min="-2" pref="40" max="-2" attributes="0"/>
+              <Component id="jButtonDefault" min="-2" pref="40" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -73,7 +73,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jTextField1" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
-                  <Component id="jButton1" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                  <Component id="jButtonVybrat" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jButtonNacitaj" min="-2" pref="40" max="-2" attributes="0"/>
@@ -83,12 +83,9 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="jButton1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Vybra&#x165;"/>
-      </Properties>
+    <Component class="javax.swing.JButton" name="jButtonVybrat">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonVybratActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField1">
@@ -110,12 +107,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonNacitajActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
+    <Component class="javax.swing.JButton" name="jButtonDefault">
       <Properties>
         <Property name="text" type="java.lang.String" value="Vybra&#x165; predvolen&#xe9;"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDefaultActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">

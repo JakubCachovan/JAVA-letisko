@@ -17,9 +17,8 @@ import sql.sql_connect;
  * @author Acer
  */
 public final class HladajLetJDialog extends javax.swing.JDialog {
-    private Connection con = null;
     private ResultSet rs = null;
-    private Date datum = null;
+    private Date datum;
     private String destinacia = "";
     private String dbPath;
     /**
@@ -49,7 +48,7 @@ public final class HladajLetJDialog extends javax.swing.JDialog {
     }
     
     public Date getDatum(){
-        return datum;
+        return this.datum;  
     }
     
     public String getDestinacia(){
@@ -125,17 +124,9 @@ public final class HladajLetJDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         destinacia = jComboBoxDestinacie.getSelectedItem().toString();
         datum = new Date(jCalendar1.getDate().getTime());
-        if(datum != null && !destinacia.isEmpty()){
-            dispose();
-        }else if(datum == null){
-            JOptionPane.showMessageDialog(null, "Zadajte dátum letu !");
-        }else if(destinacia.isEmpty()){
-            JOptionPane.showMessageDialog(null, "Zvoľte destináciu !");
-        }
+        dispose();
         
     }//GEN-LAST:event_jButtonHladajLetActionPerformed
-
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonHladajLet;

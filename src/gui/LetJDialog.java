@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import letisko.Kapitan;
@@ -44,31 +45,27 @@ public class LetJDialog extends javax.swing.JDialog {
     }
     
     public void nacitajKapitanovFromDB(){
-        try (Connection con = sql_connect.ConnectDB(this.dbPath);){      
-            Statement state = con.createStatement();
-            rs = state.executeQuery("SELECT * from kapitan");
+        try (Connection con = sql_connect.ConnectDB(this.dbPath);
+                PreparedStatement state = con.prepareStatement("SELECT * from kapitan");){   
+            rs = state.executeQuery();
             while(rs.next()){
                 jComboBoxKapitan.addItem(rs.getString("priezvisko"));
-            }  
-            con.close();
+            }   
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }
     
     public void nacitajLietadlaFromDB(){
-        try {
-            Connection con = sql_connect.ConnectDB(this.dbPath);
-            Statement state = con.createStatement();
-            rs = state.executeQuery("SELECT nazov from lietadlo");
+        try (Connection con = sql_connect.ConnectDB(this.dbPath);
+                PreparedStatement state = con.prepareStatement("SELECT nazov from lietadlo");) {
+            rs = state.executeQuery();
             while(rs.next()){
                 jComboBoxLietadlo.addItem(rs.getString("nazov"));
             } 
-            con.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
-        }
-        
+        }   
     }
 
     /**
@@ -159,13 +156,13 @@ public class LetJDialog extends javax.swing.JDialog {
     private void jButtonZriadLetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonZriadLetActionPerformed
         // TODO add your handling code here:
         
-        try (Connection con = sql_connect.ConnectDB(this.dbPath);) { 
-            Statement state = con.createStatement();
-            rs = state.executeQuery("SELECT * from kapitan where priezvisko=\""+jComboBoxKapitan.getSelectedItem().toString()+"\"");
+        try (Connection con = sql_connect.ConnectDB(this.dbPath);
+                PreparedStatement state = con.prepareStatement("SELECT * from kapitan where priezvisko=?;");) { 
+            state.setString(1, jComboBoxKapitan.getSelectedItem().toString());
+            rs = state.executeQuery();
             kapitan = new Kapitan(Integer.parseInt(rs.getString("naliet_hodiny")), rs.getString("meno"), rs.getString("priezvisko"), rs.getString("rodne_cislo"));   
             java.sql.Date datumOdletu = new Date(jDateChooser1.getDate().getTime());
             let = new Let(jTextDestinacia.getText(), kapitan , datumOdletu, Lietadla.valueOf(jComboBoxLietadlo.getSelectedItem().toString()));
-            con.close();
             dispose();
         } catch (SQLException | NumberFormatException e) {
             JOptionPane.showMessageDialog(null, e);

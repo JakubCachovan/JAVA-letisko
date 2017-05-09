@@ -94,9 +94,4 @@ public class Cestujuci extends Osoba implements Serializable{
     public String toString() {
         return "Cestujuci{" + "destinacie=" + destinacie + '}';
     }
-    
-    
-    
-    
-    
 }

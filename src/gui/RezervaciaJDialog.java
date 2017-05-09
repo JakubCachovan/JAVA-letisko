@@ -10,8 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import letisko.Cestujuci;
 import sql.sql_connect;
@@ -31,8 +29,7 @@ public final class RezervaciaJDialog extends javax.swing.JDialog {
      */
     public RezervaciaJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();
-        fillTableCestujuci();        
+        initComponents();       
     }
 
     public void setDbPath(String dbPath) {
@@ -155,13 +152,12 @@ public final class RezervaciaJDialog extends javax.swing.JDialog {
         cestujuci = cestujuciJDialog.getCestujuci();
         if(cestujuci != null){
             try (Connection con = sql_connect.ConnectDB(this.dbPath);){ 
-            Statement state = con.createStatement();
-            String sql = "INSERT INTO cestujuci VALUES (\""+cestujuci.getRC()+"\", \""+cestujuci.getMeno()+"\", \""+cestujuci.getPriezvisko()+"\");";
-            state.executeUpdate(sql);
-            con.close();
-            dispose();
+                Statement state = con.createStatement();
+                String sql = "INSERT INTO cestujuci VALUES (\""+cestujuci.getRC()+"\", \""+cestujuci.getMeno()+"\", \""+cestujuci.getPriezvisko()+"\");";
+                state.executeUpdate(sql);
+                con.close();
+                dispose();
             } catch (SQLException e) {
-                
                 JOptionPane.showMessageDialog(null, "Cestujúci so zadaným rodným číslom existuje !");
             }    
         }            

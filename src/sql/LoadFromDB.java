@@ -22,6 +22,7 @@ import letisko.*;
  * @author Acer
  */
 public class LoadFromDB {
+    
     public static Letisko nacitajLetisko(String dbPath){
         Letisko letisko = new Letisko();
         letisko.setZoznamKapitanov(nacitajKapitanov(dbPath));

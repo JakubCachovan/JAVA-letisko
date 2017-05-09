@@ -5,6 +5,7 @@
  */
 package gui;
 
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -85,10 +86,20 @@ public class HladajCestDialog extends javax.swing.JDialog {
         jLabelPriezvisko.setText("Priezvisko");
 
         jTextFieldPriez.setEnabled(false);
+        jTextFieldPriez.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldPriezKeyPressed(evt);
+            }
+        });
 
         jLabelRC.setText("Rodné číslo");
 
         jTextFieldRC.setEnabled(false);
+        jTextFieldRC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldRCKeyPressed(evt);
+            }
+        });
 
         jButtonHladaj.setText("Vyhľadaj");
         jButtonHladaj.addActionListener(new java.awt.event.ActionListener() {
@@ -166,8 +177,6 @@ public class HladajCestDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_jRadioRCActionPerformed
 
     private void jButtonHladajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHladajActionPerformed
-        // TODO add your handling code here:
-        
         if(jRadioMenoPriezvisko.isSelected()){
             meno = jTextFieldMeno.getText();
             priezvisko = jTextFieldPriez.getText();
@@ -178,6 +187,18 @@ public class HladajCestDialog extends javax.swing.JDialog {
         else if(meno.equalsIgnoreCase("") && priezvisko.equalsIgnoreCase("") && jRadioMenoPriezvisko.isSelected()) JOptionPane.showMessageDialog(null, "Zadajte meno a priezvisko !");
         else dispose();
     }//GEN-LAST:event_jButtonHladajActionPerformed
+
+    private void jTextFieldPriezKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldPriezKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            jButtonHladaj.doClick();
+        }
+    }//GEN-LAST:event_jTextFieldPriezKeyPressed
+
+    private void jTextFieldRCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldRCKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            jButtonHladaj.doClick();
+        }
+    }//GEN-LAST:event_jTextFieldRCKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

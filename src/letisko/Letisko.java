@@ -71,6 +71,36 @@ public class Letisko implements Serializable {
         } 
         return false;
     }
+    /**
+     * Nájdenie letu podľa zadaného id.
+     * @param idLetu
+     * @return let alebo null
+     */
+    public Let najdiLetPodlaId(int idLetu){
+        for (Let let : zoznamLetov) {
+            if(let.getID() == idLetu){
+                return let;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Nájdenie všetkých letov, ktoré má cestujúci rezervované.
+     * @param rc_cestujuceho
+     * @return ArrayList zoznam Letov
+     */
+    public ArrayList<Let> najdiZoznamLetovCestujuceho(String rc_cestujuceho){
+        ArrayList<Let> zoznamLetovCestujuceho = new ArrayList<>();
+        for (Let let : zoznamLetov) {
+            for (Cestujuci cestujuci : let.getZoznamCestujucich()) {
+                if(cestujuci.getRC().equalsIgnoreCase(rc_cestujuceho)){
+                    zoznamLetovCestujuceho.add(let);
+                }
+            }
+        }
+        return zoznamLetovCestujuceho;
+    }
     
     /**
      * Setter pre priradenie zoznamu cestujucich pre konkrétny let.

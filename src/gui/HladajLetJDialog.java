@@ -29,8 +29,7 @@ public final class HladajLetJDialog extends javax.swing.JDialog {
      */
     public HladajLetJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();
-        naplnDestinacie();
+        initComponents();      
     }
 
     public void setDbPath(String dbPath) {

@@ -30,9 +30,7 @@ public class LetJDialog extends javax.swing.JDialog {
      */
     public LetJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();   
-        nacitajKapitanovFromDB();
-        nacitajLietadlaFromDB();
+        initComponents();         
     }
 
     public void setDbPath(String dbPath) {

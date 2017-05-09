@@ -3,21 +3,20 @@ import java.awt.HeadlessException;
 import java.io.File;
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import javax.swing.table.DefaultTableModel;
 import letisko.*;
 import sql.*;
+
 /**
  * 
- * @author Acer
+ * @author Jakub Cachovan
  */
 public final class Aplikacia extends javax.swing.JFrame {
 
     private String dbPath;
-    private String filePath;
     private ResultSet rs = null;   
     private Letisko _letisko = null;
     /**
@@ -31,8 +30,8 @@ public final class Aplikacia extends javax.swing.JFrame {
         if(LoadDataDiaglog.isFromDB){
             dbPath = loadData.getPath();                            
         }else{
-            throw new RuntimeException("Vypinam");
-            //System.exit(0);
+            //throw new RuntimeException("Vypinam");
+            System.exit(0);
         }         
         _letisko = LoadFromDB.nacitajLetisko(dbPath);
         nacitajVsetkyTabulky();
@@ -45,6 +44,24 @@ public final class Aplikacia extends javax.swing.JFrame {
         jTableLety.setAutoCreateRowSorter(true);
         jTableLietadla.setAutoCreateRowSorter(true);
         jTableZoznamCestujucich.setAutoCreateRowSorter(true);
+        loadIcons();
+    }
+    
+    public void loadIcons(){
+        jButtonHladajCestujuceho.setIcon(new ImageIcon("./icons/search.png"));
+        jButtonHladajNajblizsiLet.setIcon(new ImageIcon("./icons/search.png"));
+        jButtonObnovit.setIcon(new ImageIcon("./icons/obnovit.png"));
+        jButtonOdoberKapitana.setIcon(new ImageIcon("./icons/cancel.png"));
+        jButtonOverRezervaciu.setIcon(new ImageIcon("./icons/confirm.png"));
+        jButtonPridajCestujuceho.setIcon(new ImageIcon("./icons/plus.png"));
+        jButtonPridatKapitana.setIcon(new ImageIcon("./icons/plus.png"));
+        jButtonRefreshCestujuci.setIcon(new ImageIcon("./icons/obnovit.png"));
+        jButtonRezervaciaLetenky.setIcon(new ImageIcon("./icons/rezervacia.png"));
+        jButtonUloz.setIcon(new ImageIcon("./icons/save.png"));
+        jButtonVymazCestujuceho.setIcon(new ImageIcon("./icons/cancel.png"));
+        jButtonZriadLet.setIcon(new ImageIcon("./icons/plane.png"));
+        jButtonZrusLet.setIcon(new ImageIcon("./icons/cancel.png"));
+        jButtonZrusitRezervaciu.setIcon(new ImageIcon("./icons/cancel.png"));        
     }
     
     public void nacitajVsetkyTabulky(){
@@ -122,7 +139,7 @@ public final class Aplikacia extends javax.swing.JFrame {
                String [] row = {rs.getString("meno"), rs.getString("priezvisko"), rs.getString("rodne_cislo")};
                m.addRow(row);                
             } 
-            con.close();
+            //con.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -157,6 +174,15 @@ public final class Aplikacia extends javax.swing.JFrame {
                 break;
             }
         }    
+    } 
+    public int loadPocetVolnychMiest(int selectedRow){
+        
+        DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();
+        String idLetu = m.getValueAt(selectedRow, 0).toString();     
+        Let najdeny = _letisko.najdiLetPodlaId(Integer.parseInt(idLetu));
+        int pocetVolnychMiest = najdeny.getPocetVolnychMiest();
+        volneMiestaLabel.setText("Počet voľných miest "+pocetVolnychMiest+"");    
+        return pocetVolnychMiest; 
     }
     
     /**
@@ -348,13 +374,13 @@ public final class Aplikacia extends javax.swing.JFrame {
                         .addComponent(jScrollPane5)
                         .addGroup(jPanel4Layout.createSequentialGroup()
                             .addComponent(jButtonZriadLet)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButtonZrusLet)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButtonOverRezervaciu)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGap(22, 22, 22)
                             .addComponent(jButtonHladajNajblizsiLet)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButtonHladajCestujuceho)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jButtonRezervaciaLetenky)
@@ -375,24 +401,23 @@ public final class Aplikacia extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonOverRezervaciu, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButtonZriadLet)
-                        .addComponent(jButtonZrusLet)
-                        .addComponent(jButtonHladajNajblizsiLet)
-                        .addComponent(jButtonHladajCestujuceho)
-                        .addComponent(jButtonUloz)))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonZriadLet)
+                    .addComponent(jButtonZrusLet)
+                    .addComponent(jButtonHladajNajblizsiLet)
+                    .addComponent(jButtonHladajCestujuceho)
+                    .addComponent(jButtonUloz)
+                    .addComponent(jButtonOverRezervaciu))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
                     .addComponent(jScrollPane7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonRezervaciaLetenky)
                     .addComponent(jButtonZrusitRezervaciu)
                     .addComponent(volneMiestaLabel))
-                .addContainerGap())
+                .addGap(15, 15, 15))
         );
 
         jTabbedPane1.addTab("Letisko", jPanel4);
@@ -693,7 +718,6 @@ public final class Aplikacia extends javax.swing.JFrame {
                 state.executeUpdate();
                 m.removeRow(selectedRow);
                 _letisko.removeKapitan(_letisko.najdiKapitanaPodlaRC(rc_kapitan));
-                con.close();
                 jButtonOdoberKapitana.setEnabled(false);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
@@ -725,7 +749,6 @@ public final class Aplikacia extends javax.swing.JFrame {
                 String [] row = {kapitan.getMeno(), kapitan.getPriezvisko(), kapitan.getRC(), ""+kapitan.getNalietaneHodiny()+""};
                 m.addRow(row);
                 _letisko.addKapitan(kapitan);
-                con.close();
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, e);
             }
@@ -733,7 +756,6 @@ public final class Aplikacia extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPridatKapitanaActionPerformed
 
     private void jButtonObnovitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonObnovitActionPerformed
-        // TODO add your handling code here:
         fillTableZoznamLeteniek();
     }//GEN-LAST:event_jButtonObnovitActionPerformed
 
@@ -774,7 +796,8 @@ public final class Aplikacia extends javax.swing.JFrame {
             state.executeUpdate();
             /*vymazanie z gui*/
             cest.removeRow(selectedRowCest);
-            con.close();
+            jButtonZrusitRezervaciu.setEnabled(false);
+            //con.close();
             JOptionPane.showMessageDialog(null, "Rezervácia pre let s ID " + letID + " bola úspešne zrušená !", "Úspech", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException | HeadlessException e) {
             JOptionPane.showMessageDialog(null, e);
@@ -788,6 +811,7 @@ public final class Aplikacia extends javax.swing.JFrame {
         RezervaciaJDialog rezervaciaJDialog = new RezervaciaJDialog(this, true);
         rezervaciaJDialog.setLocationRelativeTo(null);
         rezervaciaJDialog.setDbPath(dbPath);
+        rezervaciaJDialog.fillTableCestujuci();
         rezervaciaJDialog.setVisible(true);
         Cestujuci cestujuci = rezervaciaJDialog.getCestujuci();
         DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();
@@ -808,28 +832,6 @@ public final class Aplikacia extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonRezervaciaLetenkyActionPerformed
 
-    public int loadPocetVolnychMiest(int selectedRow){
-        DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();
-        String lietadlo = m.getValueAt(selectedRow, 4).toString();
-        String idLetu = m.getValueAt(selectedRow, 0).toString();
-        int pocet = 0;
-        
-        int kapacita = Lietadla.valueOf(lietadlo).getKapacita();
-        
-        try (Connection con = sql_connect.ConnectDB(dbPath);
-                PreparedStatement state = con.prepareStatement("SELECT count(id) as pocet from Letenka WHERE id=? GROUP BY id;");){    
-            state.setString(1, idLetu);
-            rs = state.executeQuery();                  
-            while (rs.next()) {                        
-                pocet = rs.getInt("pocet");//getInt("pocet");
-            }
-            con.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }    
-        volneMiestaLabel.setText("Počet voľných miest "+(kapacita-pocet)+"");    
-        return (kapacita-pocet);
-    }
       
     private void jTableLetyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableLetyMouseClicked
         int selectedRow = -1;
@@ -853,6 +855,7 @@ public final class Aplikacia extends javax.swing.JFrame {
         HladajLetJDialog hladaj = new HladajLetJDialog(this, true);
         hladaj.setLocationRelativeTo(null);
         hladaj.setDbPath(dbPath);
+        hladaj.naplnDestinacie();
         hladaj.setVisible(true);
         String destinacia = hladaj.getDestinacia();  
         Date datum = null;
@@ -897,6 +900,8 @@ public final class Aplikacia extends javax.swing.JFrame {
         LetJDialog letJDialog = new LetJDialog(this, true);
         letJDialog.setLocationRelativeTo(null);
         letJDialog.setDbPath(dbPath);
+        letJDialog.nacitajKapitanovFromDB();
+        letJDialog.nacitajLietadlaFromDB();
         letJDialog.setVisible(true);
 
         Let let = letJDialog.getLet();
@@ -916,6 +921,7 @@ public final class Aplikacia extends javax.swing.JFrame {
     private void jButtonHladajCestujucehoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHladajCestujucehoActionPerformed
         HladajCestDialog cestDialog = new HladajCestDialog(this, true);
         cestDialog.setLocationRelativeTo(null);
+        
         cestDialog.setVisible(true);
         Cestujuci najdeny = null;
         if(!cestDialog.getMeno().equalsIgnoreCase("") && !cestDialog.getPriezvisko().equalsIgnoreCase("")){
@@ -928,10 +934,11 @@ public final class Aplikacia extends javax.swing.JFrame {
         }
         if(najdeny != null){
             PrehladCestujucehoDialog prehlad = new PrehladCestujucehoDialog(this, true);
-            prehlad.setLocationRelativeTo(null);          
-            prehlad.setCestujuci(najdeny);
-            prehlad.nacitajCestujuceho();
+            prehlad.setLocationRelativeTo(null);        
             prehlad.setDbPath(dbPath);
+            prehlad.setCestujuci(najdeny);
+            prehlad.setZoznamLetov(_letisko.najdiZoznamLetovCestujuceho(najdeny.getRC()));
+            prehlad.nacitajCestujuceho();
             prehlad.setVisible(true);
         }else{
             JOptionPane.showMessageDialog(null, "Zadaný cestujúci sa nenašiel !", "Varovanie", JOptionPane.WARNING_MESSAGE);

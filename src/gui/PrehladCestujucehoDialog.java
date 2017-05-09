@@ -8,9 +8,10 @@ package gui;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import letisko.Cestujuci;
+import letisko.*;
 import sql.sql_connect;
 
 /**
@@ -20,6 +21,7 @@ import sql.sql_connect;
 public final class PrehladCestujucehoDialog extends javax.swing.JDialog {
 
     private Cestujuci cestujuci;
+    private ArrayList<Let> zoznamLetov;
     private String dbPath;
     /**
      * Creates new form PrehladCestujucehoDialog
@@ -34,9 +36,11 @@ public final class PrehladCestujucehoDialog extends javax.swing.JDialog {
     public void setDbPath(String dbPath) {
         this.dbPath = dbPath;
     }
-    
-    
 
+    public void setZoznamLetov(ArrayList<Let> zoznamLetov) {
+        this.zoznamLetov = zoznamLetov;
+    }
+    
     public void setCestujuci(Cestujuci cestujuci) {
         this.cestujuci = cestujuci;
     }
@@ -46,17 +50,13 @@ public final class PrehladCestujucehoDialog extends javax.swing.JDialog {
         jLabelPriez.setText(cestujuci.getPriezvisko());
         jLabelRC.setText(cestujuci.getRC());
         DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();
-        try {
-            Connection con = sql_connect.ConnectDB(this.dbPath);
-            Statement state = con.createStatement();
-            ResultSet rs = state.executeQuery("SELECT * from lety JOIN Letenka USING (id) JOIN cestujuci USING (rodne_cislo) WHERE rodne_cislo=\""+cestujuci.getRC()+"\";");
-            while(rs.next()){
-                String [] row = {rs.getString("id"), rs.getString("destinacia"), rs.getString("datum"), rs.getString("kapitan"), rs.getString("lietadlo")};
-                m.addRow(row);
-            }
-            con.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+        for (Let let : zoznamLetov) {
+            String [] row = {let.getID()+"",
+                let.getDestinacia(),
+                let.getDatumOdletu().toString(),
+                let.getKapitan().getMeno() + " " + let.getKapitan().getPriezvisko(),
+                let.getTypLietadla().name()};
+            m.addRow(row);
         }
     }
 
@@ -106,9 +106,16 @@ public final class PrehladCestujucehoDialog extends javax.swing.JDialog {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(jTableLety);
@@ -129,23 +136,24 @@ public final class PrehladCestujucehoDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabelMeno, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-                                .addComponent(jLabelPriez, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabelRC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabelMeno, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+                                    .addComponent(jLabelPriez, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabelRC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(0, 357, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

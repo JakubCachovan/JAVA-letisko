@@ -94,11 +94,12 @@ public class Let implements Serializable {
     }   
     
     /**
-     * Getter pre vrátenie kapacity konktétneho lietadla.
+     * Getter pre vrátenie počtu voľných miest lietadla pre let.
      * @return kapacita lietadla
      */
     public int getPocetVolnychMiest(){
-        return typLietadla.getKapacita();
+        int pocetLeteniek = zoznamCestujucich.size();
+        return (typLietadla.getKapacita() - pocetLeteniek);
     }
 
     /**

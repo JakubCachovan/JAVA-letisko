@@ -57,13 +57,13 @@
                               <Component id="jScrollPane5" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <Component id="jButtonZriadLet" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jButtonZrusLet" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jButtonOverRezervaciu" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                                   <Component id="jButtonHladajNajblizsiLet" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jButtonHladajCestujuceho" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -93,19 +93,17 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jButtonOverRezervaciu" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jButtonZriadLet" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButtonZrusLet" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButtonHladajNajblizsiLet" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButtonHladajCestujuceho" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButtonUloz" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jButtonZriadLet" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonZrusLet" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonHladajNajblizsiLet" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonHladajCestujuceho" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonUloz" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonOverRezervaciu" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane5" pref="502" max="32767" attributes="0"/>
+                          <Component id="jScrollPane5" pref="498" max="32767" attributes="0"/>
                           <Component id="jScrollPane7" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -114,7 +112,7 @@
                           <Component id="jButtonZrusitRezervaciu" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="volneMiestaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

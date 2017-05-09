@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package letisko;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +10,7 @@ import java.time.LocalDate;
 import javax.swing.JOptionPane;
 
 /**
- * 
+ * Trieda reprezentujúca Letisko
  * @author Jakub Cachovan
  */
 public class Letisko implements Serializable {
@@ -25,15 +19,27 @@ public class Letisko implements Serializable {
     private ArrayList<Lietadla> zoznamLietadiel;
     private ArrayList<Let> zoznamLetov;
 
+    /**
+     * Konštruktor pre triedu Letisko.
+     * Slúži na inicializáciu polí
+     */
     public Letisko() {
         zoznamKapitanov = new ArrayList<>();
         zoznamLetov = new ArrayList<>();
         zoznamLietadiel = new ArrayList<>();
-
         zoznamLietadiel.addAll(Arrays.asList(Lietadla.values()));
-       
     }
     
+    /**
+     * Metóda na vytvorenie letu v letisku.
+     * Vytvorenie inštancie objektu typu Let pomocou parametrov tejto metódy.
+     * Pridanie objektu do zoznamu letov.
+     * @param destinacia
+     * @param datum
+     * @param kapitan
+     * @param lietadlo
+     * @return objekt typu Let alebo null
+     */
     public Let zriadLet(String destinacia, Date datum, Kapitan kapitan, Lietadla lietadlo){
         try {
             Let let = new Let(destinacia, kapitan, datum, lietadlo);
@@ -46,6 +52,11 @@ public class Letisko implements Serializable {
         }    
     }
     
+    /**
+     * Zrušenie letu v letisku na zaklade id letu.
+     * @param id - id letu
+     * @return true alebo false
+     */
     public boolean zrusLet(int id){
         try {
             for (Let let : zoznamLetov) {
@@ -61,6 +72,13 @@ public class Letisko implements Serializable {
         return false;
     }
     
+    /**
+     * Setter pre priradenie zoznamu cestujucich pre konkrétny let.
+     * Alebo setter pre nastavenie všetkých leteniek daného letu.
+     * @param idLetu - id letu
+     * @param cestujuci - zoznam cestujucich
+     * @return true alebo false
+     */
     public boolean setCestujucichPreLet(int idLetu, ArrayList<Cestujuci> cestujuci){
         for (Let let : zoznamLetov) {
             if(let.getID() == idLetu){
@@ -71,6 +89,12 @@ public class Letisko implements Serializable {
         return false;
     }
     
+    /**
+     * Metóda na vyhľadávanie cestujúceho na základe rodného čísla pre konkrétny let.
+     * @param rc
+     * @param idLetu
+     * @return true alebo false.
+     */
     public boolean najdiCestujuceho(String rc, int idLetu){
         for (Let let : zoznamLetov) {
             if(let.getID() == idLetu){
@@ -83,15 +107,11 @@ public class Letisko implements Serializable {
         return false;
     }
     
-    public Cestujuci najdiCestujuceho(String meno, String priezvisko){
-        Cestujuci najdeny = null;
-        for (Let let : zoznamLetov) {
-            najdeny = let.vyhladajCestujuceho(meno, priezvisko);
-            return najdeny;
-        }
-        return null;
-    }
-    
+    /**
+     * Nájdenie cestujúceho na základe rodného čísla.
+     * @param rc
+     * @return objekt typu Cestujuci alebo null
+     */
     public Cestujuci najdiCestujuceho(String rc){
         Cestujuci najdeny = null;
         for (Let let : zoznamLetov) {
@@ -101,6 +121,26 @@ public class Letisko implements Serializable {
         return null;
     }
     
+    /**
+     * Nájdenie cestujúceho na základe meno a priezviska.
+     * @param meno
+     * @param priezvisko
+     * @return objekt typu Cestujuci alebo null
+     */
+    public Cestujuci najdiCestujuceho(String meno, String priezvisko){
+        Cestujuci najdeny = null;
+        for (Let let : zoznamLetov) {
+            najdeny = let.vyhladajCestujuceho(meno, priezvisko);
+            return najdeny;
+        }
+        return null;
+    }   
+    
+    /**
+     * Vymazanie rezervácií vo všetkých letoch, kde sa nachádza cestujúci so zadaným rodným číslom.
+     * @param rc
+     * @return počet vymazaných
+     */
     public int vymazLetyCestujuceho(String rc){
         int pocet = 0;
         for (Let let : zoznamLetov) {
@@ -117,11 +157,16 @@ public class Letisko implements Serializable {
         return pocet;
     }
     
+    /**
+     * Nájdenie najbližšieho letu.
+     * @param datum - dátum odletu
+     * @param destinacia - destinácia letu
+     * @return objekt typu Let alebo null
+     */
     public Let najdiNajBlizsiLet(Date datum, String destinacia){
         Date najblizsiDatum;           
-        Date aktualDatum = Date.valueOf(LocalDate.now());
-        boolean letNajdeny = false;
-        
+        //Date aktualDatum = Date.valueOf(LocalDate.now());
+        boolean letNajdeny = false;     
         for(Let let : zoznamLetov){ 
             int denOdlet = let.getDatumOdletu().getDate();
             int mesiacOdlet = let.getDatumOdletu().getMonth();
@@ -133,7 +178,6 @@ public class Letisko implements Serializable {
                 return let;
             }
         }
-        
         for (Let let1 : zoznamLetov) {     
             if(let1.getDestinacia().equals(destinacia) && (let1.getDatumOdletu().after(datum))){ 
                 najblizsiDatum = let1.getDatumOdletu();
@@ -160,18 +204,35 @@ public class Letisko implements Serializable {
         return null;
     }
 
+    /**
+     * Getter pre zoznam kapitánov.
+     * @return 
+     */
     public ArrayList<Kapitan> getZoznamKapitanov() {
         return zoznamKapitanov;
     }
 
+    /**
+     * Getter pre zoznam lietadiel.
+     * @return 
+     */
     public ArrayList<Lietadla> getZoznamLietadiel() {
         return zoznamLietadiel;
     }
 
+    /**
+     * Getter pre zoznam letov.
+     * @return 
+     */
     public ArrayList<Let> getZoznamLetov() {
         return zoznamLetov;
     }
     
+    /**
+     * Metóda pre hľadanie kapitána podľa rodného čísla.
+     * @param rc
+     * @return objekt typu Kapitan alebo null
+     */
     public Kapitan najdiKapitanaPodlaRC(String rc){
         for (Kapitan kapitan : zoznamKapitanov) {
             if(kapitan.getRC().equalsIgnoreCase(rc)){
@@ -181,29 +242,50 @@ public class Letisko implements Serializable {
         return null;
     }
     
+    /**
+     * Pridanie kapitána do zoznamu kapitánov
+     * @param kapitan - objekt typu Kapitan
+     */
     public void addKapitan(Kapitan kapitan){
         if(kapitan != null){
            zoznamKapitanov.add(kapitan); 
         }    
     }
     
+    /**
+     * Vymazanie kapitána zo zoznamu kapitánov pokiaľ existuje v zozname.
+     * @param kapitan 
+     */
     public void removeKapitan(Kapitan kapitan){
         if(zoznamKapitanov.contains(kapitan)){
             zoznamKapitanov.remove(kapitan);
         }
     }
 
+    /**
+     * Setter pre zoznam kapitánov
+     * @param zoznamKapitanov 
+     */
     public void setZoznamKapitanov(ArrayList<Kapitan> zoznamKapitanov) {
         this.zoznamKapitanov = zoznamKapitanov;
     }
 
+    /**
+     * Setter pre zoznam lietadiel.
+     * @param zoznamLietadiel 
+     */
     public void setZoznamLietadiel(ArrayList<Lietadla> zoznamLietadiel) {
         this.zoznamLietadiel = zoznamLietadiel;
     }
 
+    /**
+     * Setter pre zoznam letov.
+     * @param zoznamLetov 
+     */
     public void setZoznamLetov(ArrayList<Let> zoznamLetov) {
         this.zoznamLetov = zoznamLetov;
     }
+    
     
     public static boolean load(File f){         
         return true;

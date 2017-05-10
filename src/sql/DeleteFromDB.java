@@ -11,25 +11,30 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import letisko.Cestujuci;
 
 /**
- *
- * @author Acer
+ * Trieda uchovávajúca statické metódy pre vymazávanie z databázy.
+ * @author Jakub Cachovan
  */
 public class DeleteFromDB {
+    /**
+     * Statická metóda pre zrušenie letu v databáze.
+     * Vymazanie rezervácií a letu.
+     * @param idLetu
+     * @param destinacia
+     * @param dbPath
+     * @return true/false
+     */
     public static boolean zrusitLet(int idLetu, String destinacia, String dbPath){
         try (Connection con = sql_connect.ConnectDB(dbPath);){           
             
             PreparedStatement state = con.prepareStatement("DELETE FROM Letenka WHERE id=?;");
             state.setString(1, idLetu+"");
-            state.executeUpdate();
-            //JOptionPane.showMessageDialog(null, "Všetky rezervácie vymazané !!!");       
+            state.executeUpdate();    
 
             state = con.prepareStatement("DELETE FROM lety WHERE id=?;");
             state.setString(1, idLetu+"");
             state.executeUpdate();
-            //JOptionPane.showMessageDialog(null, "Let s ID " + idLetu + " bol úspešne zrušený !");
             
             con.close();
             return true;
@@ -39,6 +44,12 @@ public class DeleteFromDB {
         return false;
     }
     
+    /**
+     * Statická metóda pre vymazanie cestujúceho a všetkých jeho rezervácií v databáze.
+     * @param rc_cestujuceho - rodné číslo cestujúceho
+     * @param dbPath - cesta k datatbáze
+     * @return true/false
+     */
     public static boolean deleteCestujuceho(String rc_cestujuceho, String dbPath){
         if(maCestujuciLetenky(rc_cestujuceho, dbPath)){
             if(deleteLetenkyCestujuceho(rc_cestujuceho, dbPath)){
@@ -57,6 +68,12 @@ public class DeleteFromDB {
         return false;
     }
     
+    /**
+     * Statická metóda pre vymazanie všetkých rezervácií cestujúceho v databáze.
+     * @param rc_cestujuceho - rodné číslo cestujúceho
+     * @param dbPath - cesta k datatbáze
+     * @return true/false
+     */
     public static boolean deleteLetenkyCestujuceho(String rc_cestujuceho, String dbPath){
         try (Connection con = sql_connect.ConnectDB(dbPath);){
             PreparedStatement state = con.prepareStatement("DELETE from Letenka WHERE rodne_cislo=?;");
@@ -70,6 +87,12 @@ public class DeleteFromDB {
         return false;
     }
     
+    /**
+     * Zistenie, či má cestujúci rezervácie letov.
+     * @param rc_cestujuceho - rodné číslo cestujúceho
+     * @param dbPath - cesta k datatbáze
+     * @return true/false
+     */
     public static boolean maCestujuciLetenky(String rc_cestujuceho, String dbPath){
         int pocet = 0;
         try (Connection con = sql_connect.ConnectDB(dbPath);){

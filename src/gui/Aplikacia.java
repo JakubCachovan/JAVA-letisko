@@ -2,7 +2,7 @@ package gui;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.sql.*;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -11,7 +11,7 @@ import letisko.*;
 import sql.*;
 
 /**
- * 
+ * Hlavná trieda, obsahujúca vizuálne prvky pre aplikáciu
  * @author Jakub Cachovan
  */
 public final class Aplikacia extends javax.swing.JFrame {
@@ -19,8 +19,12 @@ public final class Aplikacia extends javax.swing.JFrame {
     private String dbPath;
     private ResultSet rs = null;   
     private Letisko _letisko = null;
+    
     /**
-     * Creates new form Aplikacia
+     * Konštruktor, pre inicializáciu GUI prvkov ako aj ich nastavenie.
+     * Umožňuje vybrať zdroj dát (databáza alebo súbor). 
+     * Zabezpečuje načítanie kľučového objektu typu Letisko pomocou statickej metódy nacitajLetisko(dbPath:String),
+     * ktorá čerpá informácie z databázy.
      */
     public Aplikacia() {            
         initComponents(); 
@@ -47,6 +51,9 @@ public final class Aplikacia extends javax.swing.JFrame {
         loadIcons();
     }
     
+    /**
+     * Načítanie ikon pre buttons.
+     */
     public void loadIcons(){
         jButtonHladajCestujuceho.setIcon(new ImageIcon("./icons/search.png"));
         jButtonHladajNajblizsiLet.setIcon(new ImageIcon("./icons/search.png"));
@@ -64,6 +71,9 @@ public final class Aplikacia extends javax.swing.JFrame {
         jButtonZrusitRezervaciu.setIcon(new ImageIcon("./icons/cancel.png"));        
     }
     
+    /**
+     * Načítanie množiny tabuliek.
+     */
     public void nacitajVsetkyTabulky(){
         fillTableKapitan();    
         fillTableLety();
@@ -72,6 +82,9 @@ public final class Aplikacia extends javax.swing.JFrame {
         fillTableZoznamLeteniek(); 
     }
     
+    /**
+     * Naplnenie tabulky zoznamu leteniek
+     */
     public void fillTableZoznamLeteniek(){
         DefaultTableModel m = (DefaultTableModel)jTableLetenky.getModel();
         m.setRowCount(0);
@@ -87,6 +100,9 @@ public final class Aplikacia extends javax.swing.JFrame {
             }       
         }    
     }
+    /**
+     * Naplnenie tabulky zoznamu cestujúcich
+     */
     public void fillTableZoznamCestujucich(){         
         int selectedRow = -1;
         selectedRow = jTableLety.getSelectedRow();
@@ -106,6 +122,9 @@ public final class Aplikacia extends javax.swing.JFrame {
             }       
         }
     }
+    /**
+     *  Naplnenie tabulky zoznamu letov
+     */
     public void fillTableLety(){
         DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();  
         m.setRowCount(0);
@@ -118,6 +137,10 @@ public final class Aplikacia extends javax.swing.JFrame {
             m.addRow(row);
         }    
     }  
+    
+    /**
+     * Naplnenie tabulky zoznamu kapitánov
+     */
     public void fillTableKapitan(){
         DefaultTableModel m = (DefaultTableModel)jTableKapitan.getModel();
         m.setRowCount(0);
@@ -129,6 +152,10 @@ public final class Aplikacia extends javax.swing.JFrame {
             m.addRow(row);
         }
     }  
+    
+    /**
+     * Naplnenie tabulky zoznamu cestujúcich
+     */
     public void fillTableCestujuci(){
         try (Connection con = sql_connect.ConnectDB(dbPath);
                 PreparedStatement state = con.prepareStatement("SELECT * FROM cestujuci");) {         
@@ -144,6 +171,10 @@ public final class Aplikacia extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }  
+    
+    /**
+     * Naplnenie tabulky zoznamu lietadiel
+     */
     public void fillTableLietadlo(){
         DefaultTableModel m = (DefaultTableModel)jTableLietadla.getModel();
         m.setRowCount(0);
@@ -151,30 +182,45 @@ public final class Aplikacia extends javax.swing.JFrame {
             String [] row = {lietadla.name(), lietadla.getKapacita()+""};
             m.addRow(row);
         }       
-    }         
-    public void zobrazitDestinacie(){       
+    } 
+    
+    /**
+     * Naplnenie tabulky zoznamu destinácií pre cestujúceho
+     */
+    public void fillTableDestinacie(){       
         int selectedRow = -1;
         selectedRow = jTableCestujuci.getSelectedRow();
-        if(selectedRow != -1){
-            DefaultTableModel m = (DefaultTableModel)jTableCestujuci.getModel();
+        DefaultTableModel m = (DefaultTableModel)jTableCestujuci.getModel();
+        DefaultTableModel modelDestinacie = (DefaultTableModel)jTableDestinacie.getModel(); 
+        if(selectedRow != -1){  
             String rc = m.getValueAt(selectedRow, 2).toString();  
-
-            DefaultTableModel modelDestinacie = (DefaultTableModel)jTableDestinacie.getModel(); 
             modelDestinacie.setRowCount(0);
-
+            ArrayList<String> destinacieCestujuceho = new ArrayList<>();
             for (Let let : _letisko.getZoznamLetov()) {
                 for (Cestujuci cestujuci : let.getZoznamCestujucich()) {
                     if(cestujuci.getRC().equalsIgnoreCase(rc)){
-                        for (String destinacie : cestujuci.getDestinacie()) {
-                            String [] riadok = {destinacie};
-                            modelDestinacie.addRow(riadok);   
+                        for (String destinacie : cestujuci.getDestinacie()) {                           
+                            if(!destinacieCestujuceho.contains(destinacie)){
+                                destinacieCestujuceho.add(destinacie);
+                                String [] riadok = {destinacie};
+                                modelDestinacie.addRow(riadok);   
+                            }
+                                
                         }                    
                     }                    
                 }
-                break;
             }
+        }else{
+            modelDestinacie.setRowCount(0);
         }    
     } 
+    
+    /**
+     * Metóda pre načítanie počtu voľných miest na sedenie v lietadle.
+     * Uskutoční sa po kliknutí na riadok v tabulke zoznam letov.
+     * @param selectedRow - označený riadok tabulky
+     * @return pocet volnych miest
+     */
     public int loadPocetVolnychMiest(int selectedRow){
         
         DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();
@@ -676,12 +722,11 @@ public final class Aplikacia extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonPridajCestujuceho, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButtonVymazCestujuceho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonRefreshCestujuci, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButtonVymazCestujuceho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonRefreshCestujuci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
@@ -705,6 +750,10 @@ public final class Aplikacia extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Tlačidlo pre vymazanie kapitána.
+     * @param evt 
+     */
     private void jButtonOdoberKapitanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOdoberKapitanaActionPerformed
         /*vymaz kapitana*/
         DefaultTableModel m = (DefaultTableModel)jTableKapitan.getModel();
@@ -728,6 +777,10 @@ public final class Aplikacia extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButtonOdoberKapitanaActionPerformed
 
+    /**
+     * Tlačidlo pre pridanie kapitána.
+     * @param evt 
+     */
     private void jButtonPridatKapitanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPridatKapitanaActionPerformed
         /*pridaj kapitána*/
         KapitanJDialog kapitanJDialog = new KapitanJDialog(this, true);
@@ -755,10 +808,18 @@ public final class Aplikacia extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonPridatKapitanaActionPerformed
 
+    /**
+     * Obnovenie tabulky zoznam leteniek
+     * @param evt 
+     */
     private void jButtonObnovitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonObnovitActionPerformed
         fillTableZoznamLeteniek();
     }//GEN-LAST:event_jButtonObnovitActionPerformed
 
+    /**
+     * Vyvolá sa po kliknutí na tabulku zoznam cestujúcich.
+     * @param evt 
+     */
     private void jTableZoznamCestujucichMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableZoznamCestujucichMouseClicked
 
         int selectedRow = -1;
@@ -769,11 +830,13 @@ public final class Aplikacia extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableZoznamCestujucichMouseClicked
 
     /**
+     * Zrušenie rezervácie.
+     * Vykoná vymazanie rezervácie letu pre označeného cestujúceho,
+     * 
      * @param evt 
      */
     private void jButtonZrusitRezervaciuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonZrusitRezervaciuActionPerformed
         //vymazanie z letenky
-        //vymazanie z destinacie
         DefaultTableModel cest = (DefaultTableModel)jTableZoznamCestujucich.getModel();
         int selectedRowCest = jTableZoznamCestujucich.getSelectedRow();
 
@@ -781,23 +844,21 @@ public final class Aplikacia extends javax.swing.JFrame {
         int selectedRowLety = jTableLety.getSelectedRow();
 
         String letID = lety.getValueAt(selectedRowLety, 0).toString();
-        //String destinacia = lety.getValueAt(selectedRowLety, 1).toString();
         String rc = cest.getValueAt(selectedRowCest, 2).toString();
 
         for (Let let : _letisko.getZoznamLetov()) {
-            let.zrusRezervaciu(rc);
+            if(let.getID() == Integer.parseInt(letID)){
+                let.zrusRezervaciu(rc);   
+            }          
         }
-        
         try (Connection con = sql_connect.ConnectDB(dbPath);
-                PreparedStatement state = con.prepareStatement("DELETE FROM Letenka WHERE id=? AND rodne_cislo=?;");){           
-            
+                PreparedStatement state = con.prepareStatement("DELETE FROM Letenka WHERE id=? AND rodne_cislo=?;");){                 
             state.setString(1, letID);
             state.setString(2, rc);
             state.executeUpdate();
             /*vymazanie z gui*/
             cest.removeRow(selectedRowCest);
             jButtonZrusitRezervaciu.setEnabled(false);
-            //con.close();
             JOptionPane.showMessageDialog(null, "Rezervácia pre let s ID " + letID + " bola úspešne zrušená !", "Úspech", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException | HeadlessException e) {
             JOptionPane.showMessageDialog(null, e);
@@ -806,33 +867,47 @@ public final class Aplikacia extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonZrusitRezervaciuActionPerformed
 
+    /**
+     * Rezervovanie letu pre cestujúceho, resp. vytvorenie letenky.
+     * Vykonáva vkladanie letenky do databázy.
+     * @param evt 
+     */
     private void jButtonRezervaciaLetenkyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRezervaciaLetenkyActionPerformed
         /* rezervacia letenky */
-        RezervaciaJDialog rezervaciaJDialog = new RezervaciaJDialog(this, true);
-        rezervaciaJDialog.setLocationRelativeTo(null);
-        rezervaciaJDialog.setDbPath(dbPath);
-        rezervaciaJDialog.fillTableCestujuci();
-        rezervaciaJDialog.setVisible(true);
-        Cestujuci cestujuci = rezervaciaJDialog.getCestujuci();
         DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();
         int selectedRow = jTableLety.getSelectedRow();
         String letID = m.getValueAt(selectedRow, 0).toString();
+        
+        RezervaciaJDialog rezervaciaJDialog = new RezervaciaJDialog(this, true);
+        rezervaciaJDialog.setLocationRelativeTo(null);
+        rezervaciaJDialog.setDbPath(dbPath);
+        rezervaciaJDialog.setZoznamLetov(_letisko.getZoznamLetov());
+        rezervaciaJDialog.fillTableCestujuci();
+        rezervaciaJDialog.setVisible(true);
+        Cestujuci cestujuci = rezervaciaJDialog.getCestujuci();
+        
         if(cestujuci != null){
             for (Let let : _letisko.getZoznamLetov()) {
                 if(let.getID() == Integer.parseInt(letID)){
-                    let.rezervujLetenku(let.getDatumOdletu(), cestujuci);
-                    if(InsertToDB.insertLetenka(let, cestujuci, dbPath)){
-                        fillTableZoznamCestujucich();
-                        fillTableZoznamCestujucich();
-                        JOptionPane.showMessageDialog(null, "Letenka pre let " +letID+" úspešne rezervovaná !");
-                        loadPocetVolnychMiest(selectedRow);
+                    if(let.rezervujLetenku(let.getDatumOdletu(), cestujuci)){
+                        if(InsertToDB.insertLetenka(let, cestujuci, dbPath)){
+                            fillTableZoznamCestujucich();
+                            JOptionPane.showMessageDialog(null, "Letenka pre let " +letID+" úspešne rezervovaná !");
+                            loadPocetVolnychMiest(selectedRow);
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Letenka pre tohto cestujúceho už bola rezervovaná!", "Upozornenie!", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             }
         }
     }//GEN-LAST:event_jButtonRezervaciaLetenkyActionPerformed
 
-      
+
+    /**
+     * Vyvolá sa po kliknutí na tabulku zoznam letov.
+     * @param evt 
+     */
     private void jTableLetyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableLetyMouseClicked
         int selectedRow = -1;
         selectedRow = jTableLety.getSelectedRow();
@@ -850,6 +925,10 @@ public final class Aplikacia extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTableLetyMouseClicked
 
+    /**
+     * Tlačidlo pre hľadanie najližšieho letu na základe požadovaných vlastností.
+     * @param evt 
+     */
     private void jButtonHladajNajblizsiLetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHladajNajblizsiLetActionPerformed
         //hladaj najblizsi let
         HladajLetJDialog hladaj = new HladajLetJDialog(this, true);
@@ -873,6 +952,11 @@ public final class Aplikacia extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButtonHladajNajblizsiLetActionPerformed
 
+    /**
+     * Zrušenie letu v letisku.
+     * Vykonáva aj vymazávanie všetkých rezervácií, pre koknrétny let,
+     * @param evt 
+     */
     private void jButtonZrusLetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonZrusLetActionPerformed
         /* zrušiť let */
         // vymazanie vsetkych rezervácií pre daný let
@@ -895,6 +979,11 @@ public final class Aplikacia extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonZrusLetActionPerformed
 
+    /**
+     * Zriadenie letu v letisku.
+     * Pridanie letu do zoznamu letov a databázy.
+     * @param evt 
+     */
     private void jButtonZriadLetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonZriadLetActionPerformed
         /* zriadenie letu na letisku*/
         LetJDialog letJDialog = new LetJDialog(this, true);
@@ -906,31 +995,38 @@ public final class Aplikacia extends javax.swing.JFrame {
 
         Let let = letJDialog.getLet();
         if(let != null){   
-            _letisko.zriadLet(let.getDestinacia(), let.getDatumOdletu(), let.getKapitan(), let.getTypLietadla());
+            let = _letisko.zriadLet(let.getDestinacia(), let.getDatumOdletu(), let.getKapitan(), let.getTypLietadla());
+            // set id podla DB ↓
             if(InsertToDB.insertLet(let, dbPath)){
                 /*vloz do GUI */
                 DefaultTableModel m = (DefaultTableModel)jTableLety.getModel();
-                String datumOdletu = new SimpleDateFormat("dd.MM.yyyy").format(let.getDatumOdletu());
-                String [] row = {let.getID()+"", let.getDestinacia(), datumOdletu, let.getKapitan().getMeno()+" "+let.getKapitan().getPriezvisko(), let.getTypLietadla().name()};
+                //String datumOdletu = new SimpleDateFormat("dd.MM.yyyy").format(let.getDatumOdletu());
+                String [] row = {let.getID()+"", let.getDestinacia(), let.getDatumOdletu().toString(), let.getKapitan().getMeno()+" "+let.getKapitan().getPriezvisko(), let.getTypLietadla().name()};
                 m.addRow(row);
             } 
         }
     }//GEN-LAST:event_jButtonZriadLetActionPerformed
   
-    
+    /**
+     * Vyhľadávanie cestujúceho na základe mena a priezviska 
+     * alebo na základne rodného čísla.
+     * @param evt 
+     */
     private void jButtonHladajCestujucehoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHladajCestujucehoActionPerformed
         HladajCestDialog cestDialog = new HladajCestDialog(this, true);
-        cestDialog.setLocationRelativeTo(null);
-        
+        cestDialog.setLocationRelativeTo(null);       
         cestDialog.setVisible(true);
         Cestujuci najdeny = null;
+        boolean hladalSom = false;
         if(!cestDialog.getMeno().equalsIgnoreCase("") && !cestDialog.getPriezvisko().equalsIgnoreCase("")){
             String meno = cestDialog.getMeno();
             String priezvisko = cestDialog.getPriezvisko();  
-            najdeny = _letisko.najdiCestujuceho(meno,priezvisko);                       
+            najdeny = _letisko.najdiCestujuceho(meno,priezvisko); 
+            hladalSom = true;
         }else if(!cestDialog.getRC().equalsIgnoreCase("")){
             String rc = cestDialog.getRC();
-            najdeny = _letisko.najdiCestujuceho(rc);  
+            najdeny = _letisko.najdiCestujuceho(rc); 
+            hladalSom = true;
         }
         if(najdeny != null){
             PrehladCestujucehoDialog prehlad = new PrehladCestujucehoDialog(this, true);
@@ -940,12 +1036,16 @@ public final class Aplikacia extends javax.swing.JFrame {
             prehlad.setZoznamLetov(_letisko.najdiZoznamLetovCestujuceho(najdeny.getRC()));
             prehlad.nacitajCestujuceho();
             prehlad.setVisible(true);
-        }else{
+        }else if (hladalSom){
             JOptionPane.showMessageDialog(null, "Zadaný cestujúci sa nenašiel !", "Varovanie", JOptionPane.WARNING_MESSAGE);
         }
                 
     }//GEN-LAST:event_jButtonHladajCestujucehoActionPerformed
 
+    /**
+     * Overenie rezervácie na základe rodného čísla.
+     * @param evt 
+     */
     private void jButtonOverRezervaciuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOverRezervaciuActionPerformed
         // TODO add your handling code here:
         HladajRezervaciu rezDialog = new HladajRezervaciu(this, true);
@@ -965,15 +1065,23 @@ public final class Aplikacia extends javax.swing.JFrame {
         }    
     }//GEN-LAST:event_jButtonOverRezervaciuActionPerformed
 
+    /**
+     * Vyvolá sa po kliknutí na tabulku zoznam cestujúcich.
+     * @param evt 
+     */
     private void jTableCestujuciMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableCestujuciMouseClicked
         int selectedRow = -1;
         selectedRow = jTableCestujuci.getSelectedRow();
         if(selectedRow != -1){
-            zobrazitDestinacie();
+            fillTableDestinacie();
             jButtonVymazCestujuceho.setEnabled(true);
         }
     }//GEN-LAST:event_jTableCestujuciMouseClicked
 
+    /**
+     * Tlačidlo pre pridanie cestujúceho tabulky zoznamu cestujúcich a do databázy.
+     * @param evt 
+     */
     private void jButtonPridajCestujucehoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPridajCestujucehoActionPerformed
         /*pridaj cestujuceho*/
         CestujuciJDialog cestujuciJDialog = new CestujuciJDialog(this, true);
@@ -991,6 +1099,11 @@ public final class Aplikacia extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonPridajCestujucehoActionPerformed
 
+    /**
+     * Vymazanie cestujúceho z tabulky zoznam cestujúcich a databázy.
+     * Vykoná tiež vymazanie všetkých rezervácií cestujúceho.
+     * @param evt 
+     */
     private void jButtonVymazCestujucehoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVymazCestujucehoActionPerformed
       
         int row = jTableCestujuci.getSelectedRow();
@@ -1009,6 +1122,10 @@ public final class Aplikacia extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButtonVymazCestujucehoActionPerformed
 
+    /**
+     * Vykoná sa po kliknutí na tabulku zoznam kapitánov.
+     * @param evt 
+     */
     private void jTableKapitanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableKapitanMouseClicked
         // TODO add your handling code here:
         int selectedRow = -1;
@@ -1020,7 +1137,8 @@ public final class Aplikacia extends javax.swing.JFrame {
   
     
     /**
-     * 
+     * Uloženie do súboru.
+     * Formát reťazca je pre súbor typu CSV.
      * @param evt 
      */
     private void jButtonUlozActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUlozActionPerformed
@@ -1028,7 +1146,7 @@ public final class Aplikacia extends javax.swing.JFrame {
             JFileChooser fileChooser = new JFileChooser("./");
             if (fileChooser.showSaveDialog(this)== JFileChooser.APPROVE_OPTION) {
               File file = fileChooser.getSelectedFile();
-              if(Letisko.save(file, _letisko)){
+              if(_letisko.save(file)){
                   JOptionPane.showMessageDialog(null, "Uloženie úspešné!", "Info", JOptionPane.INFORMATION_MESSAGE);
               }else{
                   JOptionPane.showMessageDialog(null, "Chyba pri ukladaní do súboru", "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -1039,12 +1157,18 @@ public final class Aplikacia extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonUlozActionPerformed
 
+    /**
+     * Vyvolanie metód fillTableCestujuci() a fillTableDestinácie().
+     * @param evt 
+     */
     private void jButtonRefreshCestujuciActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshCestujuciActionPerformed
         fillTableCestujuci();
+        fillTableDestinacie();
     }//GEN-LAST:event_jButtonRefreshCestujuciActionPerformed
   
     
     /**
+     * Metóda spúštajúca program.
      * @param args the command line arguments
      */
     public static void main(String args[]) {

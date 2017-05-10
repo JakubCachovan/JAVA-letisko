@@ -19,7 +19,6 @@ public class Cestujuci extends Osoba implements Serializable{
      */
     public Cestujuci(String meno, String priezvisko, String RC) {
         super(meno, priezvisko, RC);
-        
         destinacie = new ArrayList<>();
     }
 

@@ -8,8 +8,8 @@ package gui;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Acer
+ * 
+ * @author Jakub Cachovan
  */
 public class DestinaciaJDialog extends javax.swing.JDialog {
 
@@ -22,6 +22,10 @@ public class DestinaciaJDialog extends javax.swing.JDialog {
         initComponents();
     }
     
+    /**
+     * Getter pre názov destinácie letu.
+     * @return 
+     */
     public String getNazovDestinacie(){
         return nazov;
     }

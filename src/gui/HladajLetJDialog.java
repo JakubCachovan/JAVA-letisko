@@ -13,8 +13,8 @@ import javax.swing.JOptionPane;
 import sql.sql_connect;
 
 /**
- *
- * @author Acer
+ * Dialog pre hladanie letu.
+ * @author Jakub Cachovan
  */
 public final class HladajLetJDialog extends javax.swing.JDialog {
     private ResultSet rs = null;
@@ -31,10 +31,17 @@ public final class HladajLetJDialog extends javax.swing.JDialog {
         initComponents();      
     }
 
+    /**
+     * Setter pre adresu databázy.
+     * @param dbPath 
+     */
     public void setDbPath(String dbPath) {
         this.dbPath = dbPath;
     }
     
+    /**
+     * Naplnenie prvku combobox názvami všetkých letových destinácií.
+     */
     public void naplnDestinacie(){
         try (Connection con = sql_connect.ConnectDB(this.dbPath);
                 Statement state = con.createStatement();){
@@ -47,10 +54,18 @@ public final class HladajLetJDialog extends javax.swing.JDialog {
         }
     }
     
+    /**
+     * Getter pre dátum odletu.
+     * @return 
+     */
     public Date getDatum(){
         return this.datum;  
     }
     
+    /**
+     * Getter pre destináciu.
+     * @return 
+     */
     public String getDestinacia(){
         return destinacia;
     }
@@ -120,6 +135,10 @@ public final class HladajLetJDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Inicializácia atribútov destinácia a dátum a zrušenie dialogu.
+     * @param evt 
+     */
     private void jButtonHladajLetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHladajLetActionPerformed
         // TODO add your handling code here:
         destinacia = jComboBoxDestinacie.getSelectedItem().toString();

@@ -9,24 +9,29 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import letisko.*;
 
 /**
- *
- * @author Acer
+ * Trieda uchovávajúca statické metódy pre vkladanie do databázy.
+ * @author Jakub Cachovan
  */
 public class InsertToDB {
     
+    /**
+     * Statická metóda pre vykonanie rezervácie v databáze.
+     * @param let
+     * @param cestujuci
+     * @param dbPath
+     * @return true/false
+     */
     public static boolean insertLetenka(Let let, Cestujuci cestujuci, String dbPath){
-        try (Connection con = sql_connect.ConnectDB(dbPath);){
-            PreparedStatement state = con.prepareStatement("INSERT INTO Letenka(id,rodne_cislo) VALUES (?,?);");
+        try (Connection con = sql_connect.ConnectDB(dbPath);
+            PreparedStatement state = con.prepareStatement("INSERT INTO Letenka(id,rodne_cislo) VALUES (?,?);");){
             state.setString(1, let.getID()+"");
             state.setString(2, cestujuci.getRC());
             state.executeUpdate();
-            con.close();
             return true;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -34,6 +39,12 @@ public class InsertToDB {
         return false;
     }
     
+    /**
+     * Statická metóda pre vloženie informácií o lete do databázy.
+     * @param let
+     * @param dbPath
+     * @return true/false
+     */
     public static boolean insertLet(Let let, String dbPath){
         try (Connection con = sql_connect.ConnectDB(dbPath);){                       
             PreparedStatement state = con.prepareStatement("INSERT INTO lety(destinacia, rc_kapitan, datum, lietadlo) VALUES (?,?,?,?);");       
@@ -59,9 +70,14 @@ public class InsertToDB {
         return false;
     }
     
+    /**
+     * Statická metóda pre vloženie cestujúceho do databázy.
+     * @param cestujuci
+     * @param dbPath
+     * @return true/false
+     */
     public static boolean insertCestujuceho(Cestujuci cestujuci, String dbPath){
         try (Connection con = sql_connect.ConnectDB(dbPath);){
-                
                 PreparedStatement state = con.prepareStatement("INSERT INTO cestujuci(rodne_cislo,meno,priezvisko) VALUES(?,?,?);");
                 state.setString(1, cestujuci.getRC());
                 state.setString(2, cestujuci.getMeno());

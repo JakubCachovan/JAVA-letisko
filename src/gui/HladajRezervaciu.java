@@ -5,11 +5,12 @@
  */
 package gui;
 
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Acer
+ * 
+ * @author Jakub Cachovan
  */
 public class HladajRezervaciu extends javax.swing.JDialog {
     
@@ -22,6 +23,10 @@ public class HladajRezervaciu extends javax.swing.JDialog {
         initComponents();
     }
 
+    /**
+     * Getter pre rodné číslo cestujúceho.
+     * @return 
+     */
     public String getRC() {
         return rc;
     }
@@ -89,9 +94,11 @@ public class HladajRezervaciu extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Inicializácia atribútu rc a zrušenie dialogu.
+     * @param evt 
+     */
     private void jButtonHladajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHladajActionPerformed
-        // TODO add your handling code here:
-
         if(!"".equals(jTextFieldRC.getText())){
             rc = jTextFieldRC.getText();
             dispose();
@@ -100,22 +107,28 @@ public class HladajRezervaciu extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButtonHladajActionPerformed
 
+    /**
+     * Automatické kliknutie tlačidla pre vyhľadanie z poľa rodné číslo, pokial uživateľ stlačí ENTER. 
+     * @param evt 
+     */
     private void jTextFieldRCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldRCKeyPressed
-        // TODO add your handling code here:
-        
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            jButtonHladaj.doClick();
+        }
         
     }//GEN-LAST:event_jTextFieldRCKeyPressed
 
+    /**
+     * Aktivovanie tlačidla pre hladanie pokial pole obsahuje text, inak je tlačidlo neaktívne.
+     * @param evt 
+     */
     private void jTextFieldRCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldRCKeyTyped
-        // TODO add your handling code here:
         if(jTextFieldRC.getText().isEmpty()){
             jButtonHladaj.setEnabled(false);
         }else{
             jButtonHladaj.setEnabled(true);
         }
     }//GEN-LAST:event_jTextFieldRCKeyTyped
-
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonHladaj;

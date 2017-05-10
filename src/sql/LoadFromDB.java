@@ -18,11 +18,16 @@ import javax.swing.JOptionPane;
 import letisko.*;
 
 /**
- *
- * @author Acer
+ * Trieda uchovávajúca statické metódy pre načítanie objektu typu Letisko z databázy.
+ * @author Jakub Cachovan
  */
 public class LoadFromDB {
     
+    /**
+     * Statická metóda pre načítanie objektu typu Letisko z databázy.
+     * @param dbPath
+     * @return 
+     */
     public static Letisko nacitajLetisko(String dbPath){
         Letisko letisko = new Letisko();
         letisko.setZoznamKapitanov(nacitajKapitanov(dbPath));
@@ -30,6 +35,12 @@ public class LoadFromDB {
         return letisko;
     }
     
+    /**
+     * Statická metóda pre načítanie objektu typu Kapitán z databázy na základe rodného čísla kapitána.
+     * @param rc - rodné číslo kapitána
+     * @param dbPath - cesta k databáze
+     * @return 
+     */
     public static Kapitan najdiKapitanaPodlaRC(String rc, String dbPath){
         try (Connection con = sql_connect.ConnectDB(dbPath);) {           
             PreparedStatement state = con.prepareStatement("SELECT * from kapitan WHERE rodne_cislo=?");
@@ -52,6 +63,11 @@ public class LoadFromDB {
         }
     }
     
+    /**
+     * Statická metóda pre načítanie všetkých letov z databázy.
+     * @param dbPath
+     * @return 
+     */
     public static ArrayList<Let> nacitajLety(String dbPath){
         ArrayList<Let> nacitaneLety = new ArrayList<>();
         try (Connection con = sql_connect.ConnectDB(dbPath);){
@@ -94,6 +110,11 @@ public class LoadFromDB {
         return nacitaneLety;
     }
     
+    /**
+     * Statická metóda pre načítanie všetkých kapitánov z databázy.
+     * @param dbPath
+     * @return 
+     */
     public static ArrayList<Kapitan> nacitajKapitanov(String dbPath){
         ArrayList<Kapitan> nacitanyKapitani = new ArrayList<>();
         try (Connection con = sql_connect.ConnectDB(dbPath);){
@@ -120,6 +141,12 @@ public class LoadFromDB {
         return nacitanyKapitani;
     }
     
+    /**
+     * Statická metóda pre načítanie všetkých cestujúcich z databázy na základne id letu.
+     * @param idLetu
+     * @param dbPath
+     * @return 
+     */
     public static ArrayList<Cestujuci> nacitajCestujucichLetu(int idLetu, String dbPath){
         ArrayList<Cestujuci> nacitanyCestujuci = new ArrayList<>();
         try (Connection con = sql_connect.ConnectDB(dbPath);){
@@ -146,6 +173,11 @@ public class LoadFromDB {
         return nacitanyCestujuci;
     }
     
+    /**
+     * Statická metóda pre nastavenie destinácii pre cestujúcich na základe letov, ktoré majú rezervované.
+     * @param zoznamCestujucich
+     * @param dbPath 
+     */
     public static void priradDestinacieCestujucim(ArrayList<Cestujuci> zoznamCestujucich, String dbPath){      
         for (Cestujuci cestujuci : zoznamCestujucich) {
             try (Connection con = sql_connect.ConnectDB(dbPath);){

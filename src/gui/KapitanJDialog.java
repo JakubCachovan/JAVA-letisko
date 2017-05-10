@@ -8,8 +8,8 @@ package gui;
 import javax.swing.JOptionPane;
 import letisko.Kapitan;
 /**
- *
- * @author Acer
+ * Dialog pre pridanie kapitana.
+ * @author Jakub Cachovan
  */
 public class KapitanJDialog extends javax.swing.JDialog {
 
@@ -22,8 +22,33 @@ public class KapitanJDialog extends javax.swing.JDialog {
         initComponents();
     }
 
+    /**
+     * Getter pre objekt typu Kapitan.
+     * @return 
+     */
     public Kapitan getKapitan(){
         return kapitan;
+    }
+    
+    /**
+     * Metóda pre validáciu polí.
+     * @return 
+     */
+    public boolean validacia(){
+        if(jTextMeno.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Nie je zadané meno kapitána");
+            return false;
+        }else if(jTextPriezvisko.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Nie je zadané priezvisko kapitána");
+            return false;
+        }else if(jTextNalietaneHod.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Nie sú zadané nalietané hodiny kapitána");
+            return false;
+        }else if(jTextRC.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Nie je zadané rodné číslo kapitána");
+            return false;
+        }
+        return true;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,7 +67,7 @@ public class KapitanJDialog extends javax.swing.JDialog {
         jTextPriezvisko = new javax.swing.JTextField();
         jTextRC = new javax.swing.JTextField();
         jTextNalietaneHod = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jButtonUlozitKapitana = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pridanie kapitána");
@@ -55,16 +80,10 @@ public class KapitanJDialog extends javax.swing.JDialog {
 
         jLabel4.setText("Nalietané hodiny");
 
-        jTextPriezvisko.addActionListener(new java.awt.event.ActionListener() {
+        jButtonUlozitKapitana.setText("Uložiť");
+        jButtonUlozitKapitana.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextPriezviskoActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("Uložiť");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonUlozitKapitanaActionPerformed(evt);
             }
         });
 
@@ -77,7 +96,7 @@ public class KapitanJDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextMeno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextPriezvisko)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonUlozitKapitana, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextNalietaneHod)
                     .addComponent(jTextRC)
                     .addGroup(layout.createSequentialGroup()
@@ -109,31 +128,29 @@ public class KapitanJDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextNalietaneHod, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonUlozitKapitana, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    /**
+     * Vytvorenie inštancie kapitána a zrušenie dialogu.
+     * @param evt 
+     */
+    private void jButtonUlozitKapitanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUlozitKapitanaActionPerformed
         /* pridaj kapitana */
-        try {
+        if(validacia()){
             kapitan = new Kapitan(Integer.parseInt(jTextNalietaneHod.getText()), jTextMeno.getText(), jTextPriezvisko.getText(), jTextRC.getText());
             dispose();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jTextPriezviskoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextPriezviskoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextPriezviskoActionPerformed
+    }//GEN-LAST:event_jButtonUlozitKapitanaActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonUlozitKapitana;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

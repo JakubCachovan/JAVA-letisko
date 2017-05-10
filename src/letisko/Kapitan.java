@@ -9,7 +9,6 @@ import java.io.Serializable;
 public class Kapitan extends Osoba implements Serializable{
     
     private int nalietaneHodiny;
-
     /**
      * Konštruktor pre kapitána.
      * @param nalietaneHodiny
@@ -44,7 +43,7 @@ public class Kapitan extends Osoba implements Serializable{
      */
     @Override
     public String getRC() {
-        return super.getRC(); //To change body of generated methods, choose Tools | Templates.
+        return super.getRC();
     }
 
     /**
@@ -53,7 +52,7 @@ public class Kapitan extends Osoba implements Serializable{
      */
     @Override
     public String getPriezvisko() {
-        return super.getPriezvisko(); //To change body of generated methods, choose Tools | Templates.
+        return super.getPriezvisko();
     }
 
     /**
@@ -62,7 +61,7 @@ public class Kapitan extends Osoba implements Serializable{
      */
     @Override
     public String getMeno() {
-        return super.getMeno(); //To change body of generated methods, choose Tools | Templates.
+        return super.getMeno();
     }
 
     /**

@@ -7,10 +7,10 @@ package letisko;
 
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -42,7 +42,8 @@ public class OsobaTest {
 
     /**
      * Test of getMeno method, of class Osoba.
-     */
+     * 
+    */
     @Test
     public void testGetMeno() {
         System.out.println("getMeno");
@@ -107,6 +108,18 @@ public class OsobaTest {
         String RC = "12345";
         Osoba o = new Osoba("Peter", "Peteris", "6525623");
         o.setRC(RC);
+    }
+
+    /**
+     * Test of toString method, of class Osoba.
+     */
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        Osoba instance = null;
+        String expResult = "";
+        String result = instance.toString();
+        assertEquals(expResult, result);
     }
     
 }

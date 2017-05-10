@@ -81,6 +81,7 @@ public class Letisko implements Serializable {
                 return let;
             }
         }
+        JOptionPane.showMessageDialog(null, "Let s ID = "+idLetu+" sa nenasiel");
         return null;
     }
     
@@ -144,10 +145,9 @@ public class Letisko implements Serializable {
     public Cestujuci najdiCestujuceho(String rc){
         Cestujuci najdeny = null;
         for (Let let : zoznamLetov) {
-            najdeny = let.vyhladajCestujuceho(rc);
-            return najdeny;
+            najdeny = let.vyhladajCestujuceho(rc);      
         }
-        return null;
+        return najdeny;
     }
     
     /**
@@ -160,9 +160,8 @@ public class Letisko implements Serializable {
         Cestujuci najdeny = null;
         for (Let let : zoznamLetov) {
             najdeny = let.vyhladajCestujuceho(meno, priezvisko);
-            return najdeny;
         }
-        return null;
+        return najdeny;
     }   
     
     /**
@@ -315,29 +314,17 @@ public class Letisko implements Serializable {
         this.zoznamLetov = zoznamLetov;
     }
     
-    
-    public static boolean load(File f){         
-        return true;
-    }
-    
-    public boolean save(File f){
-        return true;
-    }
-    
-    
-    
     /**
-     * 
-     * @param f
-     * @param _letisko
-     * @return 
+     * Exportovanie dát do súboru CSV.
+     * @param f - subor
+     * @return true alebo false
      */
-    public static boolean save(File f, Letisko _letisko){
+    public boolean save(File f){
         try
         {           
             FileWriter fw = new FileWriter(f.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(_letisko.exportCSVLety());
+            bw.write(this.exportCSVLety());
             bw.close();
             return true;
         }
@@ -348,6 +335,10 @@ public class Letisko implements Serializable {
         }
     }
     
+    /**
+     * Metóda na tvorbu reťazca vhodného pre CSV súbor.
+     * @return String
+     */
     public String exportCSVLety(){
         String ret = "";
         
@@ -366,6 +357,10 @@ public class Letisko implements Serializable {
         return ret;
     }
 
+    /**
+     * Znaková reprezentácia objektu Letisko
+     * @return String
+     */
     @Override
     public String toString() {
         return  "\nZoznam kapitanov\n" 
@@ -375,15 +370,5 @@ public class Letisko implements Serializable {
                 + "\nZoznam lietadiel\n"
                 +";Nazov lietadla; kapacita"
                 + zoznamLietadiel.toString();               
-    }
-   
-    /**
-     * @param args the command line arguments
-     */
-    /*public static void main(String[] args) {
-        // TODO code application logic here
-        Aplikacia a = new Aplikacia();
-        a.show();
-    }*/
-    
+    }   
 }

@@ -37,14 +37,20 @@ public class Let implements Serializable {
      * @return true alebo false v závislosti od úspešného rezervovania letenky
      */
     public boolean rezervujLetenku(Date datumRezervacie, Cestujuci cestujuci){
-        try {
+        boolean existujeCestujuci = false;
+        for (Cestujuci c : zoznamCestujucich) {
+            if(c.getRC().equalsIgnoreCase(cestujuci.getRC())){
+                existujeCestujuci = true;
+            }
+        } 
+        if(!existujeCestujuci){
+            cestujuci.addDestinacia(destinacia);
             zoznamCestujucich.add(cestujuci);
             datumOdletu = datumRezervacie;
             return true;
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
+        }else{
             return false;
-        }
+        }       
     }
     
     /**

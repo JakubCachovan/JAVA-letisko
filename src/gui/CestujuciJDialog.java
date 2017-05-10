@@ -9,8 +9,8 @@ import javax.swing.JOptionPane;
 import letisko.Cestujuci;
 
 /**
- *
- * @author Acer
+ * 
+ * @author Jakub Cachovan
  */
 public class CestujuciJDialog extends javax.swing.JDialog {
 
@@ -23,6 +23,10 @@ public class CestujuciJDialog extends javax.swing.JDialog {
         initComponents();
     }
     
+    /**
+     * Getter pre objekt typu Cestujuci
+     * @return 
+     */
     public Cestujuci getCestujuci(){
         return cestujuci;
     }
@@ -42,7 +46,7 @@ public class CestujuciJDialog extends javax.swing.JDialog {
         jTextMeno = new javax.swing.JTextField();
         jTextPriezvisko = new javax.swing.JTextField();
         jTextRC = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jButtonPridaj = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pridať cestujúceho");
@@ -55,10 +59,10 @@ public class CestujuciJDialog extends javax.swing.JDialog {
 
         jTextMeno.setToolTipText("");
 
-        jButton1.setText("Uložiť");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonPridaj.setText("Uložiť");
+        jButtonPridaj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonPridajActionPerformed(evt);
             }
         });
 
@@ -69,7 +73,7 @@ public class CestujuciJDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                    .addComponent(jButtonPridaj, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextPriezvisko)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,14 +98,18 @@ public class CestujuciJDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextRC, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonPridaj, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    /**
+     * Tlačidlo pre uloženie cestujúceho.
+     * @param evt 
+     */
+    private void jButtonPridajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPridajActionPerformed
         /* pridaj cestujúceho */
         if(!jTextMeno.getText().isEmpty() && !jTextPriezvisko.getText().isEmpty() && !jTextRC.getText().isEmpty()){
             try{
@@ -111,11 +119,11 @@ public class CestujuciJDialog extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, e);
             }
         }        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonPridajActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonPridaj;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

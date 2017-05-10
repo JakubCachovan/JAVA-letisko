@@ -9,10 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import letisko.Cestujuci;
+import letisko.*;
 import sql.sql_connect;
 
 /**
@@ -21,6 +21,7 @@ import sql.sql_connect;
  */
 public final class RezervaciaJDialog extends javax.swing.JDialog {
     private Cestujuci cestujuci = null;
+    private ArrayList<Let> zoznamLetov;
     private ResultSet rs = null; 
     private String dbPath;
     /**
@@ -36,7 +37,22 @@ public final class RezervaciaJDialog extends javax.swing.JDialog {
     public void setDbPath(String dbPath) {
         this.dbPath = dbPath;
     }
+
+    public void setZoznamLetov(ArrayList<Let> zoznamLetov) {
+        this.zoznamLetov = zoznamLetov;
+    }
     
+    public Cestujuci najdiCestujucehoPodlaRC (String rc){
+        for (Let let : zoznamLetov) {
+            for (Cestujuci c : let.getZoznamCestujucich()) {
+                if(c.getRC().equalsIgnoreCase(rc)){
+                    return c;
+                }
+            }
+        }
+        return null;
+    }
+
     public void fillTableCestujuci(){
         try (Connection con = sql_connect.ConnectDB(this.dbPath);
                 PreparedStatement state = con.prepareStatement("SELECT * FROM cestujuci");){
@@ -171,9 +187,7 @@ public final class RezervaciaJDialog extends javax.swing.JDialog {
             DefaultTableModel m = (DefaultTableModel)jTableExistujuciCestujuci.getModel();
             int selectedRow = jTableExistujuciCestujuci.getSelectedRow();   
             String rc = m.getValueAt(selectedRow, 2).toString();
-            String meno = m.getValueAt(selectedRow, 0).toString();
-            String priezvisko = m.getValueAt(selectedRow, 1).toString();          
-            cestujuci = new Cestujuci(meno, priezvisko, rc);           
+            cestujuci = najdiCestujucehoPodlaRC(rc);
             dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);

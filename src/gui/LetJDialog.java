@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,9 +10,10 @@ import letisko.Kapitan;
 import letisko.Let;
 import letisko.Lietadla;
 import sql.sql_connect;
+
 /**
- *
- * @author Acer
+ * 
+ * @author Jakub Cachovan
  */
 public class LetJDialog extends javax.swing.JDialog {
 
@@ -34,16 +29,25 @@ public class LetJDialog extends javax.swing.JDialog {
         initComponents();         
     }
 
+    /**
+     * Setter pre adresu databázy
+     * @param dbPath 
+     */
     public void setDbPath(String dbPath) {
         this.dbPath = dbPath;
     }
-    
-    
-    
+   
+    /**
+     * Getter pre objekt typu Let.
+     * @return 
+     */
     public Let getLet(){
         return let;
     }
     
+    /**
+     * Načítanie prvku combobox priezviskom kapitánov.
+     */
     public void nacitajKapitanovFromDB(){
         try (Connection con = sql_connect.ConnectDB(this.dbPath);
                 PreparedStatement state = con.prepareStatement("SELECT * from kapitan");){   
@@ -56,6 +60,9 @@ public class LetJDialog extends javax.swing.JDialog {
         }
     }
     
+    /**
+     * Načítanie prvku combobox názvami lietadiel.
+     */
     public void nacitajLietadlaFromDB(){
         try (Connection con = sql_connect.ConnectDB(this.dbPath);
                 PreparedStatement state = con.prepareStatement("SELECT nazov from lietadlo");) {
@@ -153,9 +160,11 @@ public class LetJDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * 
+     * @param evt 
+     */
     private void jButtonZriadLetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonZriadLetActionPerformed
-        // TODO add your handling code here:
-        
         try (Connection con = sql_connect.ConnectDB(this.dbPath);
                 PreparedStatement state = con.prepareStatement("SELECT * from kapitan where priezvisko=?;");) { 
             state.setString(1, jComboBoxKapitan.getSelectedItem().toString());

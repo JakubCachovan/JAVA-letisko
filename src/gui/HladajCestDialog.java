@@ -9,8 +9,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author Acer
+ * 
+ * @author Jakub Cachovan
  */
 public class HladajCestDialog extends javax.swing.JDialog {
 
@@ -26,14 +26,26 @@ public class HladajCestDialog extends javax.swing.JDialog {
         jButtonHladaj.setEnabled(false);
     }
 
+    /**
+     * Getter pre meno cestujúceho
+     * @return 
+     */
     public String getMeno() {
         return meno;
     }
 
+    /**
+     * Getter pre priezvisko cestujúceho
+     * @return 
+     */
     public String getPriezvisko() {
         return priezvisko;
     }
 
+    /**
+     * Getter pre rodné číslo cestujúceho
+     * @return 
+     */
     public String getRC() {
         return rc;
     }
@@ -158,16 +170,24 @@ public class HladajCestDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Vykoná sa po kliknutí radiobutton podľa mena a priezviska.
+     * Slúži na aktivovanie pola pre meno a priezviska a zablokovanie pola pre rodné číslo.
+     * @param evt 
+     */
     private void jRadioMenoPriezviskoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioMenoPriezviskoActionPerformed
         // TODO add your handling code here:
         jTextFieldMeno.setEnabled(true);
         jTextFieldPriez.setEnabled(true);
         jTextFieldRC.setEnabled(false);
-        jButtonHladaj.setEnabled(true);
-        
-        
+        jButtonHladaj.setEnabled(true);  
     }//GEN-LAST:event_jRadioMenoPriezviskoActionPerformed
 
+    /**
+     * Vykoná sa po kliknutí radiobutton podľa rodného čísla.
+     * Slúži na aktivovanie pola pre rodné číslo a zablokovanie pola pre meno a priezvisko.
+     * @param evt 
+     */
     private void jRadioRCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioRCActionPerformed
         // TODO add your handling code here:
         jTextFieldMeno.setEnabled(false);
@@ -176,6 +196,10 @@ public class HladajCestDialog extends javax.swing.JDialog {
         jButtonHladaj.setEnabled(true);
     }//GEN-LAST:event_jRadioRCActionPerformed
 
+    /**
+     * Metóda na inicializáciu atribútov cestujúceho, potrebné jeho na vyhľadanie.
+     * @param evt 
+     */
     private void jButtonHladajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHladajActionPerformed
         if(jRadioMenoPriezvisko.isSelected()){
             meno = jTextFieldMeno.getText();
@@ -188,12 +212,20 @@ public class HladajCestDialog extends javax.swing.JDialog {
         else dispose();
     }//GEN-LAST:event_jButtonHladajActionPerformed
 
+    /**
+     * Automatické kliknutie tlačidla pre vyhľadanie z poľa pre priezvisko, pokial uživateľ stlačí ENTER. 
+     * @param evt 
+     */
     private void jTextFieldPriezKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldPriezKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             jButtonHladaj.doClick();
         }
     }//GEN-LAST:event_jTextFieldPriezKeyPressed
 
+    /**
+     * Automatické kliknutie tlačidla pre vyhľadanie z poľa pre rodné číslo, pokial uživateľ stlačí ENTER. 
+     * @param evt 
+     */
     private void jTextFieldRCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldRCKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             jButtonHladaj.doClick();

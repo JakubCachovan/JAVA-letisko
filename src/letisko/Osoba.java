@@ -12,7 +12,7 @@ public class Osoba implements Serializable{
     private String RC;
 
     /**
-     * 
+     * Konštruktor pre objekt typu Osoba.
      * @param meno
      * @param priezvisko
      * @param RC 
@@ -22,23 +22,23 @@ public class Osoba implements Serializable{
         this.priezvisko = priezvisko;
         this.RC = RC;
     }
-
+    
     /**
-     * Getter pre meno osoby
-     * @return meno
-     */
+    * Getter pre meno osoby
+    * @return meno
+    */
     public String getMeno() {
         return meno;
     }
-
+    
     /**
      * Setter pre meno osoby
-     * @param meno 
+     * @param meno
      */
     public void setMeno(String meno) {
         this.meno = meno;
     }
-
+    
     /**
      * Gettter pre priezvisko osoby
      * @return priezvisko
@@ -46,34 +46,34 @@ public class Osoba implements Serializable{
     public String getPriezvisko() {
         return priezvisko;
     }
-
+    
     /**
      * Setter pre priezisko osoby
-     * @param priezvisko 
+     * @param priezvisko
      */
     public void setPriezvisko(String priezvisko) {
         this.priezvisko = priezvisko;
     }
-
+    
     /**
      * Getter pre rodné číslo osoby
-     * @return 
+     * @return
      */
     public String getRC() {
         return RC;
     }
-
+    
     /**
      * Setter pre rodné číslo osoby
-     * @param RC 
+     * @param RC
      */
     public void setRC(String RC) {
         this.RC = RC;
     }
-
+    
     /**
      * Znaková reprezentácia objektu typu Osoba
-     * @return 
+     * @return
      */
     @Override
     public String toString() {

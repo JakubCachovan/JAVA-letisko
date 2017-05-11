@@ -34,7 +34,6 @@ public final class Aplikacia extends javax.swing.JFrame {
         if(LoadDataDiaglog.isFromDB){
             dbPath = loadData.getPath();                            
         }else{
-            //throw new RuntimeException("Vypinam");
             System.exit(0);
         }         
         _letisko = LoadFromDB.nacitajLetisko(dbPath);
@@ -133,7 +132,7 @@ public final class Aplikacia extends javax.swing.JFrame {
                 let.getDestinacia(), 
                 let.getDatumOdletu().toString(), 
                 let.getKapitan().getMeno() + " " + let.getKapitan().getPriezvisko(), 
-                let.getTypLietadla().name()};           
+                let.getTypLietadla().name()}; 
             m.addRow(row);
         }    
     }  
@@ -629,7 +628,7 @@ public final class Aplikacia extends javax.swing.JFrame {
         jTabbedPane1.addTab("Kapitáni", jPanel2);
 
         jButtonPridajCestujuceho.setIcon(new javax.swing.ImageIcon("C:\\Users\\Acer\\Documents\\NetBeansProjects\\Letisko\\icons\\plus.png")); // NOI18N
-        jButtonPridajCestujuceho.setText("Pridaj cestujúceho do DB");
+        jButtonPridajCestujuceho.setText("Pridaj cestujúceho");
         jButtonPridajCestujuceho.setToolTipText("");
         jButtonPridajCestujuceho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -668,7 +667,7 @@ public final class Aplikacia extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTableCestujuci);
 
         jButtonVymazCestujuceho.setIcon(new javax.swing.ImageIcon("C:\\Users\\Acer\\Documents\\NetBeansProjects\\Letisko\\icons\\cancel.png")); // NOI18N
-        jButtonVymazCestujuceho.setText("Vymaž cestujúceho z DB");
+        jButtonVymazCestujuceho.setText("Vymaž cestujúceho");
         jButtonVymazCestujuceho.setEnabled(false);
         jButtonVymazCestujuceho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1084,11 +1083,14 @@ public final class Aplikacia extends javax.swing.JFrame {
      */
     private void jButtonPridajCestujucehoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPridajCestujucehoActionPerformed
         /*pridaj cestujuceho*/
+        // ak chceme pridat cestujuceho je nutne ho priradit letu a zaroven mu pridat destinaciu pretože cestujuci su evidovani ako zoznam pod každym letom.
+        // v inom pripade nepojde 
         CestujuciJDialog cestujuciJDialog = new CestujuciJDialog(this, true);
         cestujuciJDialog.setLocationRelativeTo(null);
         cestujuciJDialog.setVisible(true);
 
         Cestujuci cestujuci = cestujuciJDialog.getCestujuci();
+        
         if(cestujuci != null){
             if(InsertToDB.insertCestujuceho(cestujuci, dbPath)){
                 /*vloz do GUI */

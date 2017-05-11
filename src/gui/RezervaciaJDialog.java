@@ -188,7 +188,15 @@ public final class RezervaciaJDialog extends javax.swing.JDialog {
             int selectedRow = jTableExistujuciCestujuci.getSelectedRow();   
             String rc = m.getValueAt(selectedRow, 2).toString();
             cestujuci = najdiCestujucehoPodlaRC(rc);
-            dispose();
+            if(cestujuci != null){
+                dispose();
+            }
+            else{
+                String meno = m.getValueAt(selectedRow, 0).toString();
+                String priezvisko = m.getValueAt(selectedRow, 1).toString();
+                cestujuci = new Cestujuci(meno, priezvisko, rc);
+                dispose();
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }

@@ -240,33 +240,33 @@ public final class Aplikacia extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel4 = new javax.swing.JPanel();
+        jPanelLetisko = new javax.swing.JPanel();
         jButtonZriadLet = new javax.swing.JButton();
         jButtonZrusLet = new javax.swing.JButton();
         jButtonHladajNajblizsiLet = new javax.swing.JButton();
-        jScrollPane5 = new javax.swing.JScrollPane();
+        jScrollPaneLety = new javax.swing.JScrollPane();
         jTableLety = new javax.swing.JTable();
         jButtonRezervaciaLetenky = new javax.swing.JButton();
         jButtonZrusitRezervaciu = new javax.swing.JButton();
-        jScrollPane7 = new javax.swing.JScrollPane();
+        jScrollPaneZoznamCestujucich = new javax.swing.JScrollPane();
         jTableZoznamCestujucich = new javax.swing.JTable();
         volneMiestaLabel = new javax.swing.JLabel();
         jButtonHladajCestujuceho = new javax.swing.JButton();
         jButtonOverRezervaciu = new javax.swing.JButton();
         jButtonUloz = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        jPanelLetenky = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTableLetenky = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jButtonObnovit = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        jPanelKapitani = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableKapitan = new javax.swing.JTable();
         jButtonPridatKapitana = new javax.swing.JButton();
         jButtonOdoberKapitana = new javax.swing.JButton();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTableLietadla = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        jPanelCestujuci = new javax.swing.JPanel();
         jButtonPridajCestujuceho = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableCestujuci = new javax.swing.JTable();
@@ -331,7 +331,7 @@ public final class Aplikacia extends javax.swing.JFrame {
                 jTableLetyMouseClicked(evt);
             }
         });
-        jScrollPane5.setViewportView(jTableLety);
+        jScrollPaneLety.setViewportView(jTableLety);
 
         jButtonRezervaciaLetenky.setIcon(new javax.swing.ImageIcon("C:\\Users\\Acer\\Documents\\NetBeansProjects\\Letisko\\icons\\rezervacia.png")); // NOI18N
         jButtonRezervaciaLetenky.setText("Rezervácia letenky");
@@ -379,7 +379,7 @@ public final class Aplikacia extends javax.swing.JFrame {
                 jTableZoznamCestujucichMouseClicked(evt);
             }
         });
-        jScrollPane7.setViewportView(jTableZoznamCestujucich);
+        jScrollPaneZoznamCestujucich.setViewportView(jTableZoznamCestujucich);
 
         volneMiestaLabel.setText("Počet voľných miest: ?");
 
@@ -408,16 +408,16 @@ public final class Aplikacia extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelLetiskoLayout = new javax.swing.GroupLayout(jPanelLetisko);
+        jPanelLetisko.setLayout(jPanelLetiskoLayout);
+        jPanelLetiskoLayout.setHorizontalGroup(
+            jPanelLetiskoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLetiskoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jScrollPane5)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanelLetiskoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelLetiskoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPaneLety)
+                        .addGroup(jPanelLetiskoLayout.createSequentialGroup()
                             .addComponent(jButtonZriadLet)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButtonZrusLet)
@@ -427,26 +427,26 @@ public final class Aplikacia extends javax.swing.JFrame {
                             .addComponent(jButtonHladajNajblizsiLet)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButtonHladajCestujuceho)))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGroup(jPanelLetiskoLayout.createSequentialGroup()
                         .addComponent(jButtonRezervaciaLetenky)
                         .addGap(18, 18, 18)
                         .addComponent(volneMiestaLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanelLetiskoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPaneZoznamCestujucich, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                    .addGroup(jPanelLetiskoLayout.createSequentialGroup()
                         .addComponent(jButtonZrusitRezervaciu)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLetiskoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonUloz)))
                 .addContainerGap())
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        jPanelLetiskoLayout.setVerticalGroup(
+            jPanelLetiskoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLetiskoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelLetiskoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonZriadLet)
                     .addComponent(jButtonZrusLet)
                     .addComponent(jButtonHladajNajblizsiLet)
@@ -454,18 +454,18 @@ public final class Aplikacia extends javax.swing.JFrame {
                     .addComponent(jButtonUloz)
                     .addComponent(jButtonOverRezervaciu))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
-                    .addComponent(jScrollPane7))
+                .addGroup(jPanelLetiskoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPaneLety, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneZoznamCestujucich))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelLetiskoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonRezervaciaLetenky)
                     .addComponent(jButtonZrusitRezervaciu)
                     .addComponent(volneMiestaLabel))
                 .addGap(15, 15, 15))
         );
 
-        jTabbedPane1.addTab("Letisko", jPanel4);
+        jTabbedPane1.addTab("Letisko", jPanelLetisko);
 
         jTableLetenky.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -502,24 +502,24 @@ public final class Aplikacia extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelLetenkyLayout = new javax.swing.GroupLayout(jPanelLetenky);
+        jPanelLetenky.setLayout(jPanelLetenkyLayout);
+        jPanelLetenkyLayout.setHorizontalGroup(
+            jPanelLetenkyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLetenkyLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelLetenkyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1084, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(jPanelLetenkyLayout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonObnovit)))
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        jPanelLetenkyLayout.setVerticalGroup(
+            jPanelLetenkyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLetenkyLayout.createSequentialGroup()
+                .addGroup(jPanelLetenkyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonObnovit)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -527,7 +527,7 @@ public final class Aplikacia extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Letenky", jPanel3);
+        jTabbedPane1.addTab("Letenky", jPanelLetenky);
 
         jTableKapitan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -594,14 +594,14 @@ public final class Aplikacia extends javax.swing.JFrame {
         });
         jScrollPane6.setViewportView(jTableLietadla);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelKapitaniLayout = new javax.swing.GroupLayout(jPanelKapitani);
+        jPanelKapitani.setLayout(jPanelKapitaniLayout);
+        jPanelKapitaniLayout.setHorizontalGroup(
+            jPanelKapitaniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelKapitaniLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanelKapitaniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelKapitaniLayout.createSequentialGroup()
                         .addComponent(jButtonPridatKapitana)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonOdoberKapitana)
@@ -611,21 +611,21 @@ public final class Aplikacia extends javax.swing.JFrame {
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        jPanelKapitaniLayout.setVerticalGroup(
+            jPanelKapitaniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelKapitaniLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanelKapitaniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonOdoberKapitana)
                     .addComponent(jButtonPridatKapitana, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelKapitaniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 551, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Kapitáni", jPanel2);
+        jTabbedPane1.addTab("Kapitáni", jPanelKapitani);
 
         jButtonPridajCestujuceho.setIcon(new javax.swing.ImageIcon("C:\\Users\\Acer\\Documents\\NetBeansProjects\\Letisko\\icons\\plus.png")); // NOI18N
         jButtonPridajCestujuceho.setText("Pridaj cestujúceho");
@@ -700,14 +700,14 @@ public final class Aplikacia extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelCestujuciLayout = new javax.swing.GroupLayout(jPanelCestujuci);
+        jPanelCestujuci.setLayout(jPanelCestujuciLayout);
+        jPanelCestujuciLayout.setHorizontalGroup(
+            jPanelCestujuciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCestujuciLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanelCestujuciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelCestujuciLayout.createSequentialGroup()
                         .addComponent(jButtonPridajCestujuceho)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonVymazCestujuceho)
@@ -718,22 +718,22 @@ public final class Aplikacia extends javax.swing.JFrame {
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        jPanelCestujuciLayout.setVerticalGroup(
+            jPanelCestujuciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCestujuciLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanelCestujuciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButtonPridajCestujuceho, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                     .addComponent(jButtonVymazCestujuceho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonRefreshCestujuci, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelCestujuciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
                     .addComponent(jScrollPane4))
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Cestujúci", jPanel1);
+        jTabbedPane1.addTab("Cestujúci", jPanelCestujuci);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1223,17 +1223,17 @@ public final class Aplikacia extends javax.swing.JFrame {
     private javax.swing.JButton jButtonZrusLet;
     private javax.swing.JButton jButtonZrusitRezervaciu;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanelCestujuci;
+    private javax.swing.JPanel jPanelKapitani;
+    private javax.swing.JPanel jPanelLetenky;
+    private javax.swing.JPanel jPanelLetisko;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPaneLety;
+    private javax.swing.JScrollPane jScrollPaneZoznamCestujucich;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableCestujuci;
     private javax.swing.JTable jTableDestinacie;

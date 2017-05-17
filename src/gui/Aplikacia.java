@@ -1028,7 +1028,7 @@ public final class Aplikacia extends javax.swing.JFrame {
             hladalSom = true;
         }
         if(najdeny != null){
-            PrehladCestujucehoDialog prehlad = new PrehladCestujucehoDialog(this, true);
+            PrehladCestujucehoDialog prehlad = new PrehladCestujucehoDialog(this, false);
             prehlad.setLocationRelativeTo(null);        
             prehlad.setDbPath(dbPath);
             prehlad.setCestujuci(najdeny);

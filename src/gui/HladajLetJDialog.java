@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Date;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import sql.sql_connect;
 
@@ -28,7 +29,8 @@ public final class HladajLetJDialog extends javax.swing.JDialog {
      */
     public HladajLetJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        initComponents();      
+        initComponents();  
+        jButtonHladajLet.setIcon(new ImageIcon("./icons/search.png"));
     }
 
     /**
@@ -92,6 +94,7 @@ public final class HladajLetJDialog extends javax.swing.JDialog {
 
         jLabel2.setText("Dátum");
 
+        jButtonHladajLet.setIcon(new javax.swing.ImageIcon("C:\\Users\\Acer\\Documents\\NetBeansProjects\\Letisko\\icons\\search.png")); // NOI18N
         jButtonHladajLet.setText("Hľadaj let");
         jButtonHladajLet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -144,8 +144,9 @@ public class Letisko implements Serializable {
      */
     public Cestujuci najdiCestujuceho(String rc){
         Cestujuci najdeny = null;
-        for (Let let : zoznamLetov) {
-            najdeny = let.vyhladajCestujuceho(rc);      
+        for (Let let : zoznamLetov) {         
+            najdeny = let.vyhladajCestujuceho(rc);   
+            if(najdeny != null) return najdeny; 
         }
         return najdeny;
     }
@@ -160,6 +161,7 @@ public class Letisko implements Serializable {
         Cestujuci najdeny = null;
         for (Let let : zoznamLetov) {
             najdeny = let.vyhladajCestujuceho(meno, priezvisko);
+            if(najdeny != null) return najdeny;
         }
         return najdeny;
     }   
